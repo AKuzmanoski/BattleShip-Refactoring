@@ -175,7 +175,7 @@ public class InfluenceMap implements Serializable
 		return refs;
 	}
 	/** Returns the number of turns that this influence map took to achieve a win condition
-	Defaults to 9999 if the Influence map is new and untested or if it hasn't won yet.
+	* Defaults to 9999 if the Influence map is new and untested or if it hasn't won yet.
 	*/
 	public int getTurns()
 	{ 
