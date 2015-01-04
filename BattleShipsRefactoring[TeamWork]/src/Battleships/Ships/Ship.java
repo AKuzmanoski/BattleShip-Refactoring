@@ -14,6 +14,14 @@ import Battleships.exception.PositionOccupiedException;
 
 public abstract class Ship implements Serializable
 {
+	protected int intactSegments;
+	
+	
+	public Ship(int intactSegments) {
+		super();
+		this.intactSegments = intactSegments;
+	}
+
 	protected void placeShipOnGrid(Grid board, int i, int j,
 			boolean isHorizontal, int segments) {
 				int userColumn = board.getWidth();
@@ -66,8 +74,10 @@ public abstract class Ship implements Serializable
 		}
 		board.setShipAsPlaced(this);
 	}
-
-	private int shipGridValue(Ship ship) {
+   protected int shipGridValue(Ship ship){
+	  return 9;
+   }
+	/*private int shipGridValue(Ship ship) {
 		Class<? extends Ship> shipclass = ship.getClass();
 		if(shipclass.equals(AircraftCarrier.class))
 			return 5;
@@ -80,5 +90,21 @@ public abstract class Ship implements Serializable
 		if(shipclass.equals(Minesweeper.class))
 			return 2;
 		return 9;
+	}*/
+
+	/**
+	 * Reduces the number of undamaged segments of the ship by one when called
+	 */
+	public void scoreHit()
+	{
+		intactSegments--;
+		
+		if (intactSegments < 0 )
+			throw new IllegalArgumentException("Segments var is less than 0"); 			
+	}
+	
+	public boolean isSunk()
+	{
+		return (intactSegments == 0);
 	}
 }

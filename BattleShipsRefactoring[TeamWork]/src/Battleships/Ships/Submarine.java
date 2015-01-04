@@ -25,23 +25,15 @@ import java.io.Serializable;
 import Battleships.Grid;
 
 public class Submarine extends Ship implements Serializable {
-	private int intactSegments = 3;
 
 	public Submarine(Grid board, int i, int j, boolean isHorizontal) {
-
+		
+        super(3);
 		super.placeShipOnGrid(board, i, j, isHorizontal,intactSegments);
 	}
-
-	public boolean isSunk() {
-		return (intactSegments == 0);
-	}
-
-	public void scoreHit() {
-		intactSegments--;
-
-		if (intactSegments < 0)
-			throw new IllegalArgumentException("Segments var is less than 0");
-
+	@Override
+	protected int shipGridValue(Ship ship) {
+		return 3;
 	}
 
 }
