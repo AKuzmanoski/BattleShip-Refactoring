@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<CteObject id="c0">
+    <!--Created by CTE XL 3.5.3-->
+    <Tree id="c1" name="Grid.cte" root="c2">
+        <Composition id="c2" name="Grid" style="color:#000000; font-size:9px; background-color:#ffffff; font-family:'Segoe UI'" x="1645" y="32">
+            <Composition id="c44" name="AircraftCarrier" x="170" y="87">
+                <Classification id="c14" name="addShips" x="58" y="140">
+                    <Class id="c62" name="correctPlace" x="0" y="192"/>
+                    <Class id="c65" name="incorectPlace" x="96" y="192"/>
+                </Classification>
+                <Classification id="c119" name="checkShips" x="301" y="140">
+                    <Class id="c125" name="checkPlaced" x="198" y="192"/>
+                    <Class id="c128" name="checkSunk" x="295" y="192"/>
+                    <Class id="c131" name="both" x="382" y="192"/>
+                    <Class id="c134" name="none" x="438" y="192"/>
+                </Classification>
+            </Composition>
+            <Composition id="c47" name="BattleShip" x="676" y="87">
+                <Classification id="c74" name="addShips" x="554" y="140">
+                    <Class id="c77" name="correctPlace" x="496" y="192"/>
+                    <Class id="c71" name="incorectPlace" x="592" y="192"/>
+                </Classification>
+                <Classification id="c146" name="checkShips" x="797" y="140">
+                    <Class id="c143" name="checkPlaced" x="694" y="192"/>
+                    <Class id="c140" name="checkSunk" x="791" y="192"/>
+                    <Class id="c152" name="both" x="878" y="192"/>
+                    <Class id="c149" name="none" x="934" y="192"/>
+                </Classification>
+            </Composition>
+            <Composition id="c50" name="Submarine" x="1170" y="87">
+                <Classification id="c80" name="addShips" x="1050" y="140">
+                    <Class id="c86" name="correctPlace" x="992" y="192"/>
+                    <Class id="c83" name="incorectPlace" x="1088" y="192"/>
+                </Classification>
+                <Classification id="c176" name="checkShips" x="1293" y="140">
+                    <Class id="c173" name="checkPlaced" x="1190" y="192"/>
+                    <Class id="c170" name="checkSunk" x="1287" y="192"/>
+                    <Class id="c182" name="both" x="1374" y="192"/>
+                    <Class id="c179" name="none" x="1430" y="192"/>
+                </Classification>
+            </Composition>
+            <Composition id="c53" name="Destroyer" x="1670" y="87">
+                <Classification id="c89" name="addShips" x="1546" y="140">
+                    <Class id="c95" name="correctPlace" x="1488" y="192"/>
+                    <Class id="c92" name="incorectPlace" x="1584" y="192"/>
+                </Classification>
+                <Classification id="c206" name="checkShips" x="1789" y="140">
+                    <Class id="c203" name="checkPlaced" x="1686" y="192"/>
+                    <Class id="c200" name="checkSunk" x="1783" y="192"/>
+                    <Class id="c212" name="both" x="1870" y="192"/>
+                    <Class id="c209" name="none" x="1926" y="192"/>
+                </Classification>
+            </Composition>
+            <Composition id="c56" name="Minesweeper" x="2156" y="87">
+                <Classification id="c107" name="addShips" x="2042" y="140">
+                    <Class id="c113" name="correctPlace" x="1984" y="192"/>
+                    <Class id="c110" name="incorectPlace" x="2080" y="192"/>
+                </Classification>
+                <Classification id="c221" name="checkShips" x="2285" y="140">
+                    <Class id="c218" name="checkPlaced" x="2182" y="192"/>
+                    <Class id="c215" name="checkSunk" x="2279" y="192"/>
+                    <Class id="c227" name="both" x="2366" y="192"/>
+                    <Class id="c224" name="none" x="2422" y="192"/>
+                </Classification>
+            </Composition>
+            <Classification id="c17" name="isValidPlaceForAShip" x="2497" y="87">
+                <Class id="c254" name="validPlace" x="2480" y="139"/>
+                <Class id="c257" name="invalidPlace" x="2564" y="139"/>
+            </Classification>
+            <Classification id="c20" name="setAirPlaced" x="2665" y="87">
+                <Class id="c29" name="true" x="2658" y="139"/>
+                <Class id="c32" name="false" x="2714" y="139"/>
+            </Classification>
+            <Classification id="c242" name="shot" x="2872" y="87">
+                <Class id="c245" name="incorrectPlace" x="2770" y="139"/>
+                <Class id="c248" name="shotShip" x="2876" y="139"/>
+                <Class id="c251" name="missShip" x="2953" y="139"/>
+            </Classification>
+            <Classification id="c38" name="resultChecking" x="3069" y="87">
+                <Class id="c239" name="printIsPlaced" x="3031" y="139"/>
+                <Class id="c236" name="printIsSunk" x="3130" y="139"/>
+            </Classification>
+        </Composition>
+    </Tree>
+    <TestGroup id="c3" name="">
+        <TestCase id="c260" name="Testcase 1">
+            <Marks true="c254 c62 c125 c77 c140 c86 c182 c95 c209 c113 c215 c29 c236 c248 "/>
+        </TestCase>
+        <TestCase id="c277" name="Testcase 2">
+            <Marks true="c257 c65 c134 c152 c77 c83 c179 c95 c200 c110 c224 c32 c239 c251 "/>
+        </TestCase>
+    </TestGroup>
+</CteObject>
