@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<CteObject id="c0">
+    <!--Created by CTE XL 3.5.3-->
+    <Tree id="c1" name="InfluenceMap.cte" root="c2">
+        <Composition id="c2" name="InfluenceMap" style="color:#000000; font-size:9px; background-color:#ffffff; font-family:'Segoe UI'" x="1145" y="32">
+            <Classification id="c14" name="set" x="38" y="87">
+                <Class id="c20" name="inside" x="0" y="139"/>
+                <Class id="c23" name="outside" x="62" y="139"/>
+            </Classification>
+            <Classification id="c29" name="getVal" x="165" y="87">
+                <Class id="c35" name="inside" x="132" y="139"/>
+                <Class id="c38" name="outside" x="194" y="139"/>
+            </Classification>
+            <Classification id="c68" name="setTurns" x="299" y="87">
+                <Class id="c71" name="positive" x="264" y="139"/>
+                <Class id="c74" name="negative" x="336" y="139"/>
+            </Classification>
+            <Classification id="c77" name="hit" x="560" y="87">
+                <Class id="c80" name="noHits" x="412" y="139"/>
+                <Class id="c83" name="north" x="478" y="139"/>
+                <Class id="c86" name="south" x="537" y="139"/>
+                <Class id="c89" name="east" x="597" y="139"/>
+                <Class id="c95" name="hit" x="653" y="139"/>
+                <Class id="c92" name="west" x="709" y="139"/>
+            </Classification>
+            <Classification id="c116" name="miss" x="813" y="87">
+                <Class id="c122" name="nearHits" x="765" y="139"/>
+                <Class id="c125" name="awayHits" x="840" y="139"/>
+            </Classification>
+            <Classification id="c98" name="sunk" x="1043" y="87">
+                <Class id="c101" name="middle" x="919" y="139"/>
+                <Class id="c104" name="top" x="987" y="139"/>
+                <Class id="c107" name="bottom" x="1043" y="139"/>
+                <Class id="c110" name="left" x="1113" y="139"/>
+                <Class id="c113" name="right" x="1169" y="139"/>
+            </Classification>
+            <Classification id="c47" name="Getters" x="1595" y="87">
+                <Class id="c50" name="getMaxHotspotVal" x="1225" y="139"/>
+                <Class id="c53" name="getNumberOfHotspots" x="1353" y="139"/>
+                <Class id="c56" name="getHotspots" x="1506" y="139"/>
+                <Class id="c59" name="getIntHotspots" x="1602" y="139"/>
+                <Class id="c65" name="getTurns" x="1712" y="139"/>
+                <Class id="c128" name="getHotspotI" x="1790" y="139"/>
+                <Class id="c131" name="getHotsoptJ" x="1884" y="139"/>
+                <Class id="c62" name="all" x="1979" y="139"/>
+            </Classification>
+            <Classification id="c134" name="mapFittings" x="2119" y="87">
+                <Class id="c137" name="searchDeathends" x="2035" y="139"/>
+                <Class id="c140" name="addMap" x="2156" y="139"/>
+                <Class id="c146" name="clearAll" x="2231" y="139"/>
+            </Classification>
+            <Classification id="c149" name="Test" x="2308" y="87">
+                <Class id="c152" name="toString" x="2300" y="139"/>
+            </Classification>
+        </Composition>
+    </Tree>
+    <TestGroup id="c3" name="">
+        <TestCase id="c155" name="Testcase 1">
+            <Marks true="c20 c35 c62 c71 c86 c101 c122 c137 c152 "/>
+        </TestCase>
+        <TestCase id="c168" name="Testcase 2">
+            <Marks true="c23 c35 c62 c74 c95 c125 c140 c152 c107 "/>
+        </TestCase>
+        <TestCase id="c180" name="Testcase 3">
+            <Marks true="c146 c152 c122 c113 c80 c71 c62 c38 c20 "/>
+        </TestCase>
+    </TestGroup>
+</CteObject>
