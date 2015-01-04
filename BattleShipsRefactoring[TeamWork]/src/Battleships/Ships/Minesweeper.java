@@ -19,7 +19,7 @@ public class Minesweeper extends Ship implements Serializable
 	
 	}
 	@Override
-	protected int shipGridValue(Ship ship) {
+	protected int shipGridValue() {
 		return 2;
 	}
 

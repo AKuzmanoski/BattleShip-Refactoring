@@ -20,7 +20,7 @@ public class Battleship extends Ship implements Serializable
 		super.placeShipOnGrid(board, i, j, isHorizontal, intactSegments);
 	}
 	@Override
-	protected int shipGridValue(Ship ship) {
+	protected int shipGridValue() {
 		return 4;
 	}
 

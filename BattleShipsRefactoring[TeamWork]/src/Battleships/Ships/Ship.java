@@ -53,7 +53,7 @@ public abstract class Ship implements Serializable
 
 		for (int r = i; r < i + segments; r++)
 		{
-			board.update(r, j, shipGridValue(this));
+			board.update(r, j, shipGridValue());
 		}
 		board.setShipAsPlaced(this);
 	}
@@ -70,11 +70,11 @@ public abstract class Ship implements Serializable
 
 		for (int c = j; c < j + segments; c++)
 		{
-			board.update(i, c, shipGridValue(this));
+			board.update(i, c, shipGridValue());
 		}
 		board.setShipAsPlaced(this);
 	}
-   protected int shipGridValue(Ship ship){
+   protected int shipGridValue(){
 	  return 9;
    }
 	/*private int shipGridValue(Ship ship) {

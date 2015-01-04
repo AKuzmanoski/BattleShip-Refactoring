@@ -32,7 +32,7 @@ public class Submarine extends Ship implements Serializable {
 		super.placeShipOnGrid(board, i, j, isHorizontal,intactSegments);
 	}
 	@Override
-	protected int shipGridValue(Ship ship) {
+	protected int shipGridValue() {
 		return 3;
 	}
 
