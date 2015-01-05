@@ -77,21 +77,7 @@ public abstract class Ship implements Serializable
    protected int shipGridValue(){
 	  return 9;
    }
-	/*private int shipGridValue(Ship ship) {
-		Class<? extends Ship> shipclass = ship.getClass();
-		if(shipclass.equals(AircraftCarrier.class))
-			return 5;
-		if(shipclass.equals(Battleship.class))
-			return 4;
-		if(shipclass.equals(Destroyer.class))
-			return 7;
-		if(shipclass.equals(Submarine.class))
-			return 3;
-		if(shipclass.equals(Minesweeper.class))
-			return 2;
-		return 9;
-	}*/
-
+	
 	/**
 	 * Reduces the number of undamaged segments of the ship by one when called
 	 */
