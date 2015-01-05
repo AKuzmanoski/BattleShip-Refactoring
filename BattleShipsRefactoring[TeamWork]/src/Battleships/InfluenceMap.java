@@ -31,12 +31,6 @@ public class InfluenceMap implements Serializable
 				map[a][b] = 0;
 		turns = 9999;
 	}
-	/**
-		Gets the grid value at @param i, @param j
-	
-		@returns the value of cell at the specified parameter
-	*/
-	
 	
 	/**
 		This method is used sets an element to a value on the influence map
@@ -54,6 +48,11 @@ public class InfluenceMap implements Serializable
 		map[i][j] = value;
 	}
 
+	/**
+	 * Gets the grid value at @param i, @param j
+	 * 
+	 * @returns the value of cell at the specified parameter
+	 */
 	public int getVal(int i, int j)
 	{
 		if(i < 0 || j < 0)
