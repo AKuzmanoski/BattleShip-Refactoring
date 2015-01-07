@@ -22,6 +22,8 @@ public class BattleShipInfluenceMapTester {
 
 		// hit
 		influenceMap.hit(4, 3);
+		influenceMap.hit(5, 0);
+		influenceMap.hit(4, 0);
 
 		// miss
 		influenceMap.miss(4, 2);
@@ -30,6 +32,9 @@ public class BattleShipInfluenceMapTester {
 
 		// sunk
 		influenceMap.sunk(4, 3);
+		influenceMap.sunk(4, 0);
+
+		Assert.assertEquals(4, influenceMap.getVal(3, 0));
 
 		// getters
 		Assert.assertEquals(13, influenceMap.getMaxHotspotVal());
@@ -49,7 +54,7 @@ public class BattleShipInfluenceMapTester {
 
 		// Test
 		Assert.assertEquals(
-				"|0000000000|\n|0000000000|\n|0000000000|\n|000-5000000|\n|00-59000000|\n|000-5090000|\n|0000000000|\n|0000000000|\n|00013000000|\n|0000000000|\n",
+				"|0000000000|\n|0000000000|\n|0000000000|\n|400-5000000|\n|90-59000000|\n|940-5090000|\n|2000000000|\n|0000000000|\n|00013000000|\n|0000000000|\n",
 				influenceMap.toString());
 	}
 
@@ -115,7 +120,7 @@ public class BattleShipInfluenceMapTester {
 				"|0000000000|\n|0000000000|\n|0000000000|\n|000-50-32000|\n|00-5-5555500|\n|000-5022-500|\n|0000000000|\n|0000000000|\n|0002000000|\n|0049400000|\n",
 				influenceMap.toString());
 	}
-	
+
 	@Test
 	public void testcase3() {
 		InfluenceMap influenceMap = new InfluenceMap();
@@ -124,7 +129,7 @@ public class BattleShipInfluenceMapTester {
 		influenceMap.set(5, 5, 9);
 
 		// getVal
-		
+
 		try {
 			Assert.assertEquals(13, influenceMap.getVal(8, 3));
 			Assert.assertEquals(0, influenceMap.getVal(10, 5));
@@ -134,7 +139,7 @@ public class BattleShipInfluenceMapTester {
 
 		// setTurns
 		influenceMap.setTurns(9999);
-		
+
 		// mapFittings
 		influenceMap.clearAll();
 

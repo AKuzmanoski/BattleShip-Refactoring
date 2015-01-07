@@ -249,7 +249,7 @@ public class InfluenceMap implements Serializable {
 
 			// if southern was also a hit and the northern isn't then increment
 			// eastern by 5
-			if (isHit(i + 1, j) && isHit(i - 1, j)) {
+			if (isHit(i + 1, j) && !isHit(i - 1, j)) {
 				add(i - 1, j, 11);
 			}
 
@@ -377,8 +377,66 @@ public class InfluenceMap implements Serializable {
 
 	public void sunk(int i, int j) {
 		if (isHit(i, j)) {
+			
+			try {
+				// dec above if odd
+				if (!isHit(i - 1, j) && map[i - 1][j] % 2 == 1) {
+					// if(map[i-1][j]==13)
+					subtract(i - 1, j, 9);
+				}
+	
+				// dec above if even
+				if (!isHit(i - 1, j) && map[i - 1][j] % 2 == 0) {
+					subtract(i - 1, j, 2);
+				}	
+			} catch (Exception ex) { 
+				
+			}
+				
+				
+			try {
+				// dec below if odd
+				if (!isHit(i + 1, j) && map[i + 1][j] % 2 == 1) {
+					subtract(i + 1, j, 9);
+				}
+	
+				// dec below if even
+				if (!isHit(i + 1, j) && map[i + 1][j] % 2 == 0) {
+					subtract(i + 1, j, 2);
+				}
+			} catch (Exception ex) { 
+				
+			}
 
-			// if the hit is not on an edge
+			try {
+				// dec left if even
+				if (!isHit(i, j - 1) && map[i][j - 1] % 2 == 0) {
+					subtract(i, j - 1, 4);
+				}
+	
+				// dec left if odd
+				if (!isHit(i, j - 1) && map[i][j - 1] % 2 == 1) {
+					subtract(i, j - 1, 9);
+				}
+			} catch (Exception ex) { 
+				
+			}
+
+			try {
+				// dec right if even
+				if (!isHit(i, j + 1) && map[i][j + 1] % 2 == 0) {
+					subtract(i, j + 1, 4);
+				}
+	
+				// dec right if odd
+				if (!isHit(i, j + 1) && map[i][j + 1] % 2 == 1) {
+					subtract(i, j + 1, 9);
+				}
+			} catch (Exception ex) { 
+				
+			}
+		}
+			/*// if the hit is not on an edge
 			if (!isEdge(i, j)) {
 
 				// dec above if odd
@@ -611,7 +669,7 @@ public class InfluenceMap implements Serializable {
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	/**
