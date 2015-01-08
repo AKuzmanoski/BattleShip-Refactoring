@@ -1,17 +1,35 @@
 package Battleships;
 
+import java.util.Observable;
+
 /**
  * Once cell in the influence map
+ * 
  * @author AKuzmanoski
  * @version v1.0 01/07/2015
  * @since 01/07/2015
  */
-public class InfluenceCell {
+public class InfluenceCell extends Observable {
 	private static final int hitValue = 9;
 	private static final int missValue = -5;
+	private static int hotSpotValue;
 	private int i = 0;
 	private int j = 0;
 	private int value;
+
+	/**
+	 * Constructor with position values
+	 * 
+	 * @param i
+	 *            the row index
+	 * @param j
+	 *            the column index
+	 */
+	public InfluenceCell(int i, int j) {
+		this.i = i;
+		this.j = j;
+		this.value = 0;
+	}
 
 	/**
 	 * 
@@ -29,15 +47,12 @@ public class InfluenceCell {
 		return j;
 	}
 
-	/**
-	 * Constructor with position values
-	 * @param i the row index
-	 * @param j the column index
-	 */
-	public InfluenceCell(int i, int j) {
-		this.i = i;
-		this.j = j;
-		this.value = 0;
+	public static int getHotSpotValue() {
+		return hotSpotValue;
+	}
+
+	public static void setHotSpotValue(int hotSpotValue) {
+		InfluenceCell.hotSpotValue = hotSpotValue;
 	}
 
 	/**
@@ -50,10 +65,13 @@ public class InfluenceCell {
 
 	/**
 	 * Sets value of the cell
+	 * 
 	 * @param value
 	 */
 	public void setValue(int value) {
 		this.value = value;
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	/**
@@ -75,19 +93,29 @@ public class InfluenceCell {
 	public boolean isMiss() {
 		return this.value == InfluenceCell.missValue;
 	}
-	
+
+	/**
+	 * Tells whether the cell is hotspot
+	 * 
+	 * @return <code>true</code> if cell is hotspot, in every other case
+	 *         <code>false</code>
+	 */
+	public boolean isHotspot() {
+		return compareTo(getHotSpotValue()) >= 0 && !isHit() && !equals(0);
+	}
+
 	/**
 	 * Sets cell as missed cell
 	 */
 	public void miss() {
-		this.value = InfluenceCell.missValue;
+		this.setValue(InfluenceCell.missValue);
 	}
-	
+
 	/**
 	 * Sets cell ass hitted cell
 	 */
 	public void hit() {
-		this.value = InfluenceCell.hitValue;
+		this.setValue(InfluenceCell.hitValue);
 	}
 
 	/**
@@ -97,7 +125,7 @@ public class InfluenceCell {
 	 *            to be added to current value
 	 */
 	public void add(int amount) {
-		this.value += amount;
+		this.setValue(this.getValue() + amount);
 	}
 
 	/**
@@ -107,13 +135,16 @@ public class InfluenceCell {
 	 *            to be subtracted to current value
 	 */
 	public void subtract(int amount) {
-		this.value -= amount;
+		this.setValue(this.getValue() - amount);
 	}
 
 	/**
 	 * Compares value of the cell with given value
-	 * @param value to be compared
-	 * @return -1 if cell has lower value then given value, 0 if they are equal or 1 cell value is bigger.
+	 * 
+	 * @param value
+	 *            to be compared
+	 * @return -1 if cell has lower value then given value, 0 if they are equal
+	 *         or 1 cell value is bigger.
 	 */
 	public int compareTo(int value) {
 		return (new Integer(this.value)).compareTo(new Integer(value));
@@ -143,17 +174,19 @@ public class InfluenceCell {
 
 	/**
 	 * Compares value of the cell with the given value
+	 * 
 	 * @param value
-	 * @return <code>true</code> if values are equal, <code>false</code> if they are not
+	 * @return <code>true</code> if values are equal, <code>false</code> if they
+	 *         are not
 	 */
 	public boolean equals(int value) {
 		return this.value == value;
 	}
-	
+
 	public boolean isOdd() {
 		return value % 2 == 1;
 	}
-	
+
 	public boolean isEven() {
 		return value % 2 == 0;
 	}
@@ -161,5 +194,13 @@ public class InfluenceCell {
 	@Override
 	public String toString() {
 		return value + "";
+	}
+
+	public static int getHitvalue() {
+		return hitValue;
+	}
+
+	public static int getMissvalue() {
+		return missValue;
 	}
 }
