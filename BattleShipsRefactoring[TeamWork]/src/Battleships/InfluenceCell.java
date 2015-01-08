@@ -12,7 +12,7 @@ import java.util.Observable;
 public class InfluenceCell extends Observable {
 	private static final int hitValue = 9;
 	private static final int missValue = -5;
-	private static int hotSpotValue;
+	private static int hotspotValue;
 	private int i = 0;
 	private int j = 0;
 	private int value;
@@ -47,14 +47,6 @@ public class InfluenceCell extends Observable {
 		return j;
 	}
 
-	public static int getHotSpotValue() {
-		return hotSpotValue;
-	}
-
-	public static void setHotSpotValue(int hotSpotValue) {
-		InfluenceCell.hotSpotValue = hotSpotValue;
-	}
-
 	/**
 	 * 
 	 * @return value of the cell
@@ -70,6 +62,8 @@ public class InfluenceCell extends Observable {
 	 */
 	public void setValue(int value) {
 		this.value = value;
+		
+		// Notify observers for change
 		this.setChanged();
 		this.notifyObservers();
 	}
@@ -101,7 +95,7 @@ public class InfluenceCell extends Observable {
 	 *         <code>false</code>
 	 */
 	public boolean isHotspot() {
-		return compareTo(getHotSpotValue()) >= 0 && !isHit() && !equals(0);
+		return compareTo(getHotspotValue()) >= 0 && !isHit() && !equals(0);
 	}
 
 	/**
@@ -183,10 +177,18 @@ public class InfluenceCell extends Observable {
 		return this.value == value;
 	}
 
+	/**
+	 * Tests the value of the cell
+	 * @return <code>true</code> if value is odd, <code>false</code> if it is even
+	 */
 	public boolean isOdd() {
 		return value % 2 == 1;
 	}
 
+	/**
+	 * Tests the value of the cell
+	 * @return <code>true</code> if value is even, <code>false</code> if it is odd
+	 */
 	public boolean isEven() {
 		return value % 2 == 0;
 	}
@@ -196,11 +198,32 @@ public class InfluenceCell extends Observable {
 		return value + "";
 	}
 
+	/**
+	 * @return the value of the map that represents hitted cell
+	 */
 	public static int getHitvalue() {
 		return hitValue;
 	}
 
+	/**
+	 * @return the value of the map that represents missed cell
+	 */
 	public static int getMissvalue() {
 		return missValue;
+	}
+
+	/**
+	 * @return the value of the map that represents hotspot cell
+	 */
+	public static int getHotspotValue() {
+		return hotspotValue;
+	}
+
+	/**
+	 * Sets hotspot value
+	 * @param hotspotValue
+	 */
+	public static void setHotspotValue(int hotspotValue) {
+		InfluenceCell.hotspotValue = hotspotValue;
 	}
 }

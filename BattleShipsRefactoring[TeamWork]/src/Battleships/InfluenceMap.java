@@ -109,7 +109,7 @@ public class InfluenceMap implements Serializable, Observer {
 	 *         influence map.
 	 */
 	public int getMaxHotspotVal() {
-		return InfluenceCell.getHotSpotValue();
+		return InfluenceCell.getHotspotValue();
 	}
 
 	/**
@@ -573,8 +573,8 @@ public class InfluenceMap implements Serializable, Observer {
 	}
 
 	public void setDeadends(int i, int j) {
+		InfluenceCell cell = get(i, j);
 		int Dave;
-		boolean done = false;
 
 		// enters statement if it is in a corner
 		// top left corner
@@ -582,12 +582,11 @@ public class InfluenceMap implements Serializable, Observer {
 		// while (!done)
 		// {
 
-		if (!get(i, j).isMiss()) {
+		if (!cell.isMiss()) {
 			if (i == 0 && j == 0) {
-				if (!done && get(i + 1, j).equals(-9)
-						&& get(i, j + 1).equals(-9)) {
-					get(i, j).subtract(7);
-					done = true;
+				if (below(cell).equals(-9) && right(cell).equals(-9)) {
+					cell.subtract(7);
+					return;
 
 				}
 			}
@@ -596,10 +595,9 @@ public class InfluenceMap implements Serializable, Observer {
 			// top right corner
 
 			if (i == 0 && j == getWidth() - 1) {
-				if (!done && get(i + 1, j).equals(-9)
-						&& get(i, j - 1).equals(-9)) {
-					get(i, j).subtract(7);
-					done = true;
+				if (below(cell).equals(-9) && left(cell).equals(-9)) {
+					cell.subtract(7);
+					return;
 				}
 			}
 
@@ -607,10 +605,9 @@ public class InfluenceMap implements Serializable, Observer {
 			// bottom left corner
 
 			if (i == getHeight() - 1 && j == 0) {
-				if (!done && get(i - 1, j).equals(-9)
-						&& get(i, j + 1).equals(-9)) {
-					get(i, j).subtract(7);
-					done = true;
+				if (above(cell).equals(-9) && right(cell).equals(-9)) {
+					cell.subtract(7);
+					return;
 				}
 			}
 
@@ -618,10 +615,9 @@ public class InfluenceMap implements Serializable, Observer {
 			// bottom right corner
 
 			if (i == getHeight() - 1 && j == getWidth() - 1) {
-				if (!done && get(i - 1, j).equals(-9)
-						&& get(i, j - 1).equals(-9)) {
-					get(i, j).subtract(7);
-					done = true;
+				if (above(cell).equals(-9) && left(cell).equals(-9)) {
+					cell.subtract(7);
+					return;
 				}
 			}
 
@@ -639,11 +635,10 @@ public class InfluenceMap implements Serializable, Observer {
 
 			catch (ArrayIndexOutOfBoundsException e) {
 				if (i + 1 != getHeight() && j + 1 != getWidth() && i - 1 != -1) {
-					if (!done && get(i + 1, j).equals(-9)
-							&& get(i - 1, j).equals(-9)
-							&& get(i, j + 1).equals(-9)) {
-						get(i, j).subtract(7);
-						done = true;
+					if (below(cell).equals(-9) && above(cell).equals(-9)
+							&& right(cell).equals(-9)) {
+						cell.subtract(7);
+						return;
 					}
 				}
 			}
@@ -653,15 +648,12 @@ public class InfluenceMap implements Serializable, Observer {
 			// this is the right edge
 			try {
 				Dave = map[i][j + 1].getValue();
-			}
-
-			catch (ArrayIndexOutOfBoundsException e) {
+			} catch (ArrayIndexOutOfBoundsException e) {
 				if (i + 1 != getHeight() && i - 1 != -1) {
-					if (!done && get(i + 1, j).equals(-9)
-							&& get(i - 1, j).equals(-9)
-							&& get(i, j - 1).equals(-9)) {
-						get(i, j).subtract(7);
-						done = true;
+					if (above(cell).equals(-9) && below(cell).equals(-9)
+							&& left(cell).equals(-9)) {
+						cell.subtract(7);
+						return;
 					}
 				}
 			}
@@ -671,15 +663,12 @@ public class InfluenceMap implements Serializable, Observer {
 			// this is the top edge
 			try {
 				Dave = map[i - 1][j].getValue();
-			}
-
-			catch (ArrayIndexOutOfBoundsException e) {
+			} catch (ArrayIndexOutOfBoundsException e) {
 				if (i + 1 != getHeight() && j + 1 != getWidth()) {
-					if (!done && get(i + 1, j).equals(-9)
-							&& get(i, j + 1).equals(-9)
-							&& get(i, j - 1).equals(-9)) {
-						get(i, j).subtract(7);
-						done = true;
+					if (below(cell).equals(-9) && right(cell).equals(-9)
+							&& left(cell).equals(-9)) {
+						cell.subtract(7);
+						return;
 					}
 				}
 			}
@@ -688,16 +677,12 @@ public class InfluenceMap implements Serializable, Observer {
 			// bottom edge
 			try {
 				Dave = map[i + 1][j].getValue();
-			}
-
-			catch (ArrayIndexOutOfBoundsException e) {
-
+			} catch (ArrayIndexOutOfBoundsException e) {
 				if (i + 1 != getHeight() && j + 1 != getWidth()) {
-					if (!done && get(i - 1, j).equals(-9)
-							&& get(i, j + 1).equals(-9)
-							&& get(i, j - 1).equals(-9)) {
-						get(i, j).subtract(7);
-						done = true;
+					if (above(cell).equals(-9) && right(cell).equals(-9)
+							&& left(cell).equals(-9)) {
+						cell.subtract(7);
+						return;
 					}
 				}
 			}
@@ -828,15 +813,18 @@ public class InfluenceMap implements Serializable, Observer {
 		int maxValue = 0;
 		for (int i = 0; i < getHeight(); i++) {
 			for (int j = 0; j < getWidth(); j++) {
-				if (get(i, j).compareTo(maxValue) >= 0 && !get(i, j).isHit() && !get(i, j).equals(0))
+				if (get(i, j).compareTo(maxValue) >= 0 && !get(i, j).isHit()
+						&& !get(i, j).equals(0)) {
 					maxValue = get(i, j).getValue();
+				}
 			}
 		}
-		InfluenceCell.setHotSpotValue(maxValue);
+		InfluenceCell.setHotspotValue(maxValue);
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		// One of the cells has changed, so recompute hotspot value
 		computeMaxHotspotValue();
 	}
 }
