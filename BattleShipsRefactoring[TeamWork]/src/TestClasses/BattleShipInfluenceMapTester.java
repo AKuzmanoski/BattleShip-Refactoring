@@ -14,8 +14,8 @@ public class BattleShipInfluenceMapTester {
 		influenceMap.set(5, 5, 9);
 
 		// getVal
-		Assert.assertEquals(13, influenceMap.getVal(8, 3));
-		Assert.assertEquals(0, influenceMap.getVal(6, 5));
+		Assert.assertEquals(13, influenceMap.getValue(8, 3));
+		Assert.assertEquals(0, influenceMap.getValue(6, 5));
 
 		// setTurns
 		influenceMap.setTurns(9999);
@@ -34,10 +34,10 @@ public class BattleShipInfluenceMapTester {
 		influenceMap.sunk(4, 3);
 		influenceMap.sunk(4, 0);
 
-		Assert.assertEquals(4, influenceMap.getVal(3, 0));
+		Assert.assertEquals(4, influenceMap.getValue(3, 0));
 
 		// getters
-		Assert.assertEquals(13, influenceMap.getMaxHotspotVal());
+		Assert.assertEquals(13, influenceMap.getHotspotValue());
 		Assert.assertEquals(1, influenceMap.getNumberOfHotspots());
 		Assert.assertEquals("83", influenceMap.getHotspots());
 		int[] expectedHotspots = { 8, 3 };
@@ -84,8 +84,8 @@ public class BattleShipInfluenceMapTester {
 		}
 
 		// getVal
-		Assert.assertEquals(0, influenceMap.getVal(7, 3));
-		Assert.assertEquals(2, influenceMap.getVal(5, 5));
+		Assert.assertEquals(0, influenceMap.getValue(7, 3));
+		Assert.assertEquals(2, influenceMap.getValue(5, 5));
 
 		// setTurns
 		influenceMap.setTurns(-10);
@@ -103,7 +103,7 @@ public class BattleShipInfluenceMapTester {
 		influenceMap.sunk(9, 3);
 
 		// getters
-		Assert.assertEquals(5, influenceMap.getMaxHotspotVal());
+		Assert.assertEquals(5, influenceMap.getHotspotValue());
 		Assert.assertEquals(4, influenceMap.getNumberOfHotspots());
 		Assert.assertEquals("44454647", influenceMap.getHotspots());
 		int[] expectedHotspots = { 4, 4, 4, 5, 4, 6, 4, 7 };
@@ -131,8 +131,8 @@ public class BattleShipInfluenceMapTester {
 		// getVal
 
 		try {
-			Assert.assertEquals(13, influenceMap.getVal(8, 3));
-			Assert.assertEquals(0, influenceMap.getVal(10, 5));
+			Assert.assertEquals(13, influenceMap.getValue(8, 3));
+			Assert.assertEquals(0, influenceMap.getValue(10, 5));
 		} catch (Exception ex) {
 			// do nothing
 		}
@@ -156,7 +156,7 @@ public class BattleShipInfluenceMapTester {
 		influenceMap.sunk(7, 9);
 
 		// getters
-		Assert.assertEquals(4, influenceMap.getMaxHotspotVal());
+		Assert.assertEquals(4, influenceMap.getHotspotValue());
 		Assert.assertEquals(1, influenceMap.getNumberOfHotspots());
 		Assert.assertEquals("44", influenceMap.getHotspots());
 		int[] expectedHotspots = { 4, 4 };
@@ -174,4 +174,38 @@ public class BattleShipInfluenceMapTester {
 				influenceMap.toString());
 	}
 
+	@Test
+	public void testcase4() {
+		InfluenceMap influenceMap = new InfluenceMap();
+
+		influenceMap.set(1, 0, -9);
+		influenceMap.set(0, 1, -9);
+
+		influenceMap.set(3, 0, -9);
+		influenceMap.set(2, 1, -9);
+
+		influenceMap.set(0, 3, -9);
+		influenceMap.set(1, 2, -9);
+
+		influenceMap.set(0, 8, -9);
+		influenceMap.set(1, 9, -9);
+
+		influenceMap.set(3, 9, -9);
+		influenceMap.set(2, 8, -9);
+
+		influenceMap.set(8, 0, -9);
+		influenceMap.set(9, 1, -9);
+
+		influenceMap.set(9, 8, -9);
+		influenceMap.set(8, 9, -9);
+
+		influenceMap.set(9, 3, -9);
+		influenceMap.set(8, 2, -9);
+
+		influenceMap.searchDeadends();
+
+		Assert.assertEquals(
+				"|-7-9-7-90000-9-7|\n|-90-9000000-9|\n|-7-9000000-9-7|\n|-900000000-9|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|-90-9000000-9|\n|-7-9-7-90000-9-7|\n",
+				influenceMap.toString());
+	}
 }

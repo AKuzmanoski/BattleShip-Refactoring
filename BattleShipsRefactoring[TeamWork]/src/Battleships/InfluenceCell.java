@@ -13,8 +13,7 @@ public class InfluenceCell extends Observable {
 	private static final int hitValue = 9;
 	private static final int missValue = -5;
 	private static int hotspotValue;
-	private int i = 0;
-	private int j = 0;
+	private Position position;
 	private int value;
 
 	/**
@@ -26,8 +25,7 @@ public class InfluenceCell extends Observable {
 	 *            the column index
 	 */
 	public InfluenceCell(int i, int j) {
-		this.i = i;
-		this.j = j;
+		position = new Position(i, j);
 		this.value = 0;
 	}
 
@@ -36,7 +34,15 @@ public class InfluenceCell extends Observable {
 	 * @return the row index of the cell
 	 */
 	public int getI() {
-		return i;
+		return position.getI();
+	}
+	
+	/**
+	 * 
+	 * @return the position of the cell
+	 */
+	public Position getPosition() {
+		return position;
 	}
 
 	/**
@@ -44,7 +50,7 @@ public class InfluenceCell extends Observable {
 	 * @return the column index of the cell
 	 */
 	public int getJ() {
-		return j;
+		return position.getJ();
 	}
 
 	/**

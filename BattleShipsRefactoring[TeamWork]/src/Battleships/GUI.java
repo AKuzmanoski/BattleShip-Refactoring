@@ -717,7 +717,7 @@ class GUI extends JFrame
 		{
 			for (int j = 0; j < 10; j++)//change this to CoLumns for default
 			{
-				int col = data.gameState.influenceMap.getVal(i,j);
+				int col = data.gameState.influenceMap.getValue(i,j);
 				
 				if(data.showMap)
 				{

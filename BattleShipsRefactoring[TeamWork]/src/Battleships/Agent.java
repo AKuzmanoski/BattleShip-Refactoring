@@ -38,7 +38,7 @@ public class Agent
 		{
 			for (int j = 0; j < 10; j++)//change this to CoLumns for default
 			{
-				if(m.getVal(i,j) ==9)
+				if(m.getValue(i,j) ==9)
 				{
 					m.sunk(i,j);
 				}
