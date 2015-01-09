@@ -15,15 +15,16 @@ import Battleships.exception.PositionOccupiedException;
 public abstract class Ship implements Serializable
 {
 	protected int intactSegments;
-	
+	protected boolean isPlaced;
 	
 	public Ship(int intactSegments) {
 		super();
 		this.intactSegments = intactSegments;
+		isPlaced=false;
 	}
 
 	protected void placeShipOnGrid(Grid board, int i, int j,
-			boolean isHorizontal, int segments) {
+			boolean isHorizontal) {
 				int userColumn = board.getWidth();
 				int userRow = board.getLength();
 			
@@ -33,12 +34,13 @@ public abstract class Ship implements Serializable
 						return;
 				}
 				if (isHorizontal) {
-					placeHorizontalShipOnGrid(board, i, j, segments, userColumn);
+					placeHorizontalShipOnGrid(board, i, j, intactSegments, userColumn);
 				}
 				else 
 				{
-					placeVerticalShipOnGrid(board, i, j, segments, userRow);
+					placeVerticalShipOnGrid(board, i, j, intactSegments, userRow);
 				}
+				board.setShipAsPlaced(this);
 			}
 
 	private void placeVerticalShipOnGrid(Grid board, int i, int j,
@@ -55,7 +57,7 @@ public abstract class Ship implements Serializable
 		{
 			board.update(r, j, shipGridValue());
 		}
-		board.setShipAsPlaced(this);
+		
 	}
 
 	private void placeHorizontalShipOnGrid(Grid board, int i, int j, int segments,
@@ -72,9 +74,9 @@ public abstract class Ship implements Serializable
 		{
 			board.update(i, c, shipGridValue());
 		}
-		board.setShipAsPlaced(this);
+	
 	}
-   protected int shipGridValue(){
+   public int shipGridValue(){
 	  return 9;
    }
 	
@@ -93,4 +95,14 @@ public abstract class Ship implements Serializable
 	{
 		return (intactSegments == 0);
 	}
+	
+	public void setShipAsPlaced(){
+		isPlaced=true;
+	}
+	public boolean checkIsShipPlaced(){
+		return isPlaced;
+	}
+	public abstract String printIsPlaced();
+	public abstract String printIsSunk();	
+	
 }

@@ -29,11 +29,26 @@ public class Submarine extends Ship implements Serializable {
 	public Submarine(Grid board, int i, int j, boolean isHorizontal) {
 		
         super(3);
-		super.placeShipOnGrid(board, i, j, isHorizontal,intactSegments);
+		super.placeShipOnGrid(board, i, j, isHorizontal);
 	}
 	@Override
-	protected int shipGridValue() {
+	public int shipGridValue() {
 		return 3;
 	}
-
+	@Override
+	public String printIsPlaced() {
+		if(isPlaced){
+			return "";
+		}
+		return "Submarine NOT placed";
+	}
+	@Override
+	public String printIsSunk() {
+		if(isSunk()){
+			return "Submarine is SUNK";
+		}else{
+			return "Submarine is intact";
+		}
+	}
+	
 }

@@ -16,7 +16,7 @@ public class Destroyer extends Ship implements Serializable {
 
 	public Destroyer(Grid board, int i, int j, boolean isHorizontal) {
 		super(3);
-		super.placeShipOnGrid(board, i, j, isHorizontal, intactSegments);
+		super.placeShipOnGrid(board, i, j, isHorizontal);
 	}
 
 	/**
@@ -31,8 +31,25 @@ public class Destroyer extends Ship implements Serializable {
 	}
    
 	@Override
-	protected int shipGridValue() {
+	public int shipGridValue() {
 		return 7;
 	}
 
+	@Override
+	public String printIsPlaced() {
+		if(isPlaced){
+			return "Destroyer has been placed";
+		}
+		return "Destroyer NOT Placed";
+	}
+
+	@Override
+	public String printIsSunk() {
+		if(isSunk()){
+			return "Destroyer is SUNK";
+		}else{
+			return "Destroyer is intact";
+		}
+	}
+	
 }

@@ -12,7 +12,11 @@ package Battleships;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
+
+import org.junit.validator.ValidateWith;
 
 import Battleships.Ships.*;
 import Battleships.exception.PositionExceedsBoardException;
@@ -26,18 +30,9 @@ public class Grid implements Serializable
 	private int userRow;
 	private int userColumn;
 	
-	private boolean minePlaced = false;
-	private boolean subPlaced = false;
-	private boolean destPlaced = false;
-	private boolean battlePlaced = false;
-	private boolean airPlaced = false;
-	private boolean allShipsSunk = false;
 	
-	private Minesweeper minesweeper;
-	private Submarine submarine;
-	private Destroyer destroyer;
-	private Battleship battleship;
-	private AircraftCarrier aircraftCarrier;
+	
+	private HashMap<String,Ship> ships;
 	
 	
 		/**
@@ -50,6 +45,7 @@ public class Grid implements Serializable
 	*/	
 	public Grid(int i, int j)
 	{
+		ships=new HashMap<>();
 		userRow = i;
 		userColumn = j;
 		
@@ -84,12 +80,15 @@ public class Grid implements Serializable
 		
 		@return a boolean value, true if the grid contains a ship and false if it contains either a miss or empty		
 	*/
+	private boolean validPlace(int index){
+		return (index > 1 && index < 8 ) ;
+	}
 	public boolean isValidPlaceForAShip(int i, int j)
 	{
 		int index;
 		index = this.getGridVal(i,j);
 
-		if (index > 1 && index < 8 ) 
+		if (validPlace(index)) 
 			return true;
 		
 		else return false;
@@ -102,40 +101,38 @@ public class Grid implements Serializable
 	
 	public boolean allShipsSunk()
 	{
-		
-		if((minesweeper.isSunk()&& submarine.isSunk()&& destroyer.isSunk()&& battleship.isSunk()&& aircraftCarrier.isSunk() ))
-			allShipsSunk = true;
-		
-		return allShipsSunk;
+		for(Ship s:ships.values()){
+			if(!s.isSunk()) return false;
+		}
+		return true;
 	}		
 	
 	public boolean checkMineSunk()
 	{
-		return minesweeper.isSunk();		
+		return ships.get("Minesweeper").isSunk();		
 	}
 	
 	public boolean checkSubSunk()
 	{
-		return submarine.isSunk();
+		return ships.get("Submarine").isSunk();
 	}
 	
 	public boolean checkDestSunk()
 	{
 		
-		return destroyer.isSunk();
+		return ships.get("Destroyer").isSunk();
 	}
 	
 	public boolean checkBattleSunk()
 	{
 		
-		return battleship.isSunk();
+		return ships.get("Battleship").isSunk();
 	}
 	
 	public boolean checkAirSunk()
-	{		
-		//System.out.print(this.aircraftCarrier.toString()); 
-
-		return aircraftCarrier.isSunk();
+	{	
+		
+		return ships.get("AircraftCarrier").isSunk();
 	}
 	
 	
@@ -146,10 +143,9 @@ public class Grid implements Serializable
 	
 	public boolean checkMinePlaced()
 	{
-		if (minePlaced == true)
-			return true;
-		
-		else return false;
+		if(!ships.containsKey("Minesweeper"))return false;
+		return ships.get("Minesweeper").checkIsShipPlaced();
+					
 	}
 	/**
 		Sets minePlaced flag to true
@@ -157,7 +153,7 @@ public class Grid implements Serializable
 	
 	public void setMinePlacedTrue()
 	{
-		minePlaced=true;
+		ships.get("Minesweeper").setShipAsPlaced();
 	}
 	
 	public boolean addMine(int i, int j, int s)
@@ -166,7 +162,7 @@ public class Grid implements Serializable
 		
 		try
 		{
-			minesweeper = new Minesweeper(this, i, j, isHorizontal);
+			ships.put("Minesweeper", new Minesweeper(this, i, j, isHorizontal));
 		}
 		
 		catch (PositionOccupiedException Exception)
@@ -190,10 +186,8 @@ public class Grid implements Serializable
 	
 	public boolean checkSubPlaced()
 	{
-		if (subPlaced == true)
-			return true;
-		
-		else return false;
+		if(!ships.containsKey("Submarine"))return false;
+		return ships.get("Submarine").checkIsShipPlaced();
 	}
 	/**
 		Sets subPlaced flag to true
@@ -201,7 +195,7 @@ public class Grid implements Serializable
 	
 	public void setSubPlacedTrue()
 	{
-		subPlaced=true;
+		ships.get("Submarine").setShipAsPlaced();
 	}
 	
 	/**
@@ -214,7 +208,7 @@ public boolean addAir(int i, int j, int s)
 	
 	try
 	{
-				aircraftCarrier = new AircraftCarrier(this, i, j, isHorizontal);
+	      ships.put("AircraftCarrier", new AircraftCarrier(this, i, j, isHorizontal));
 	}
 	
 	catch (PositionOccupiedException Exception)
@@ -245,8 +239,8 @@ public boolean addAir(int i, int j, int s)
 		
 		try{
 		
-			Submarine sub = new Submarine(this, i, j, isHorizontal);
-			submarine = sub;
+			ships.put("Submarine", new Submarine(this, i, j, isHorizontal));
+			
 		}
 		
 		
@@ -271,10 +265,8 @@ public boolean addAir(int i, int j, int s)
 	
 	public boolean checkDestPlaced()
 	{
-		if (destPlaced == true)
-			return true;
-		
-		else return false;
+		if(!ships.containsKey("Destroyer"))return false;
+		return ships.get("Destroyer").checkIsShipPlaced();
 	}
 	/**
 		Sets destPlaced flag to true
@@ -282,7 +274,7 @@ public boolean addAir(int i, int j, int s)
 	
 	public void setDestPlacedTrue()
 	{
-		destPlaced=true;
+		 ships.get("Destroyer").setShipAsPlaced();
 	}
 	
 	/**
@@ -295,7 +287,7 @@ public boolean addAir(int i, int j, int s)
 		
 		try
 		{
-			 destroyer = new Destroyer(this, i, j, isHorizontal);
+			 ships.put("Destroyer", new Destroyer(this, i, j, isHorizontal));
 		}
 		
 		catch (PositionOccupiedException Exception)
@@ -317,7 +309,8 @@ public boolean addAir(int i, int j, int s)
 	*/
 		public boolean checkBattlePlaced()
 		{
-			return battlePlaced;
+			if(!ships.containsKey("Battleship"))return false;
+			return ships.get("Battleship").checkIsShipPlaced();
 		}
 	/**
 		Sets battlePlaced flag to true
@@ -325,7 +318,7 @@ public boolean addAir(int i, int j, int s)
 	
 	public void setBattlePlacedTrue()
 	{
-		battlePlaced=true;
+		ships.get("Battleship").setShipAsPlaced();
 	}
 	
 	/**
@@ -338,7 +331,7 @@ public boolean addAir(int i, int j, int s)
 		
 		try
 		{
-			 battleship = new Battleship(this, i, j, isHorizontal);
+			ships.put("Battleship", new Battleship(this, i, j, isHorizontal));
 		}
 		
 		catch (PositionOccupiedException Exception)
@@ -379,13 +372,19 @@ public boolean addAir(int i, int j, int s)
 		
 		if((checkMinePlaced()&& checkSubPlaced()&& checkDestPlaced()&& checkBattlePlaced()&& checkAirPlaced() ))
 		{return true;}
-		else
+		else{
+            System.out.println("not ok");
 			return false;
+		}
 	}	
 	
 	
-	
-	
+	private boolean biggerThanGrid(int i,int j){
+		return (i > userRow || j > userColumn);
+	}
+	private boolean positionNegative(int i,int j){
+		return (i < 0 || j < 0);
+	}
 	
 	/**
 		This method is used by the ship classes to add the ships to the grid.
@@ -394,11 +393,13 @@ public boolean addAir(int i, int j, int s)
 		@param j the column index
 		@param value the value of the square 
 	*/
+	
+	
 	public void set(int i, int j, int value)
 	{
-		if(i > userRow || j > userColumn)
+		if(biggerThanGrid(i, j))
 			throw new IllegalArgumentException("Number is bigger that the grid size");
-		if(i < 0 || j < 0 || value < 0) 
+		if(positionNegative(i, j) || value < 0) 
 			throw new IllegalArgumentException("Number cannot be negative");
 		if(board[i][j] != 0)
 			throw new IllegalArgumentException("Initial Position occupied");
@@ -416,9 +417,9 @@ public boolean addAir(int i, int j, int s)
 	*/
 	public void update(int i, int j, int value)
 	{
-		if(i > userRow || j > userColumn)
+		if(biggerThanGrid(i, j))
 			throw new IllegalArgumentException("Number is bigger that the grid size");
-		if(i < 0 || j < 0) 
+		if(positionNegative(i, j)) 
 			throw new IllegalArgumentException("Number cannot be negative");
 		if(value == 0)
 			throw new IllegalArgumentException("Number cannot = 0");
@@ -433,9 +434,9 @@ public boolean addAir(int i, int j, int s)
 	*/
 	public int getGridVal(int i, int j)
 	{
-		if(i < 0 || j < 0)
+		if(positionNegative(i, j))
 			throw new IllegalArgumentException("Number cannot be negative");
-		if(i > userRow || j > userColumn)
+		if(biggerThanGrid(i, j))
 			throw new IllegalArgumentException("Number is bigger that the grid size");
 		return board[i][j];
 	}
@@ -447,85 +448,23 @@ public boolean addAir(int i, int j, int s)
 	{
 		int sqr = this.getGridVal(i,j);
 		
-		
-		String output = ("Shot at " + i + "," +j + " value of square is " + sqr);
-		
+		//String output nikade ne se koristi pa ja izbrisav
+			
 		boolean hit = false;
 		
-		
-		
-		switch (sqr)
-		{
-		case 0: hit= false; output =("Shot at " + i + "," +j + " MISS" + " value of square is " + sqr); this.update(i,j,1); break;
-		case 1: hit= false; output =("Shot at " + i + "," +j + " INVALID shot already taken here" + " value of square is " + sqr); break;
-			
-		case 2: minesweeper.scoreHit();
-			
-				if (minesweeper.isSunk()== true)
-					output =("Shot at " + i + "," +j + " HIT & SUNK Minesweeper" + " value of square is " + sqr);
-								
-				else if(minesweeper.isSunk()== false)
-				output =("Shot at " + i + "," +j + " HIT " + " value of square is " + sqr);
-					this.update(i,j,(sqr - 8)); 
-					hit= true;
-		break;
-		
-			
-		case 3: submarine.scoreHit(); 
-		
-				if (submarine.isSunk()== true)
-					output =("Shot at " + i + "," +j + " HIT & SUNK Submarine" + " value of square is " + sqr);
-			
-				else if(submarine.isSunk()== false)
-					output =("Shot at " + i + "," +j + " HIT " + " value of square is " + sqr);
-					this.update(i,j,(sqr - 8)); 
-					hit= true;
-		break;		
-		
-		case 4: battleship.scoreHit(); 
-		
-				if (battleship.isSunk()== true)
-					output =("Shot at " + i + "," +j + " HIT & SUNK Battleship" + " value of square is " + sqr);
-			
-				else if(battleship.isSunk()== false)
-					output =("Shot at " + i + "," +j + " HIT " + " value of square is " + sqr);
-					this.update(i,j,(sqr - 8)); 
-					hit= true;
-			break;
-		
-		
-		case 5: aircraftCarrier.scoreHit(); 
-		
-				if (aircraftCarrier.isSunk()== true)
-					output =("Shot at " + i + "," +j + " HIT & SUNK Aircraft Carrier" + " value of square is " + sqr);
-			
-				else if(aircraftCarrier.isSunk()== false)
-					output =("Shot at " + i + "," +j + " HIT " + " value of square is " + sqr);
-					this.update(i,j,(sqr - 8)); 
-					hit= true;
-		break;
-		
-		
-		
-		case 7: destroyer.scoreHit(); 
-		
-				if (destroyer.isSunk()== true)
-					output =("Shot at " + i + "," +j + " HIT & SUNK destroyer" + " value of square is " + sqr);
-			
-				else if(destroyer.isSunk()== false)
-					output =("Shot at " + i + "," +j + " HIT " + " value of square is " + sqr);
-					this.update(i,j,(sqr - 8)); 
-					hit= true;
-		break;
-		
-		default: output =("Shot at " + i + "," +j + " ERROR shot is either already hit, or incorect" + " value of square is " + sqr); break; 
+		//ako e nekoja od vrednostite 2,3,4,5 ili 7
+		for(Ship s:ships.values()){
+			if(s.shipGridValue()==sqr){
+				s.scoreHit();
+				this.update(i,j,(sqr - 8)); 
+				return true;
+			}
 		}
-		
-		if (sqr <0)
-			output =("Shot at " + i + "," +j + " ERROR location contains a sunk ship. Value of square is " + sqr);
-			
-		return hit;
-	
+		//ako ne e vo sekoj dr slucaj ke vrati false, samo vo sqr=0 ke napravi plus update
+		if(sqr==0){
+			this.update(i,j,1); 
+		}
+	   return false;
 	
 	}
 	
@@ -558,30 +497,13 @@ public boolean addAir(int i, int j, int s)
 	*/
 	public String printIsSunk()
 	{
-		String MINESWEEPER =("Minesweeper is intact");
-		String SUBMARINE =("Submarine is intact");
-		String DESTROYER =("Destroyer is intact");
-		String BATTLESHIP =("Battleship is intact");
-		String AIRCRAFTCARRIER =("Aircraft Carrier is intact");
-			
-		if (minesweeper.isSunk() == true)
-			 MINESWEEPER =("Minesweeper is SUNK");
+		 String result=ships.get("Minesweeper").printIsPlaced()+"\n";
+		    result+=ships.get("Submarine").printIsPlaced()+"\n";
+		    result+=ships.get("Destroyer").printIsPlaced()+"\n";
+		    result+=ships.get("Battleship").printIsPlaced()+"\n";
+		    result+=ships.get("AircraftCarrier").printIsPlaced();
 		
-		if (submarine.isSunk() == true)
-			 SUBMARINE =("Submarine is SUNK");
-		
-		if (destroyer.isSunk() == true)
-			 DESTROYER =("Destroyer is SUNK");
-		
-		
-		if (battleship.isSunk() == true)
-			 BATTLESHIP =("Battleship is SUNK");
-		
-		if (aircraftCarrier.isSunk() == true)
-			 AIRCRAFTCARRIER =("Aircraft Carrier is SUNK");
-
-		
-		return (MINESWEEPER + "\n" +SUBMARINE + "\n" +  DESTROYER + "\n" + BATTLESHIP+ "\n" +AIRCRAFTCARRIER); 
+		return result;
 	}
 	
 	
@@ -592,71 +514,26 @@ public boolean addAir(int i, int j, int s)
 	public String printIsPlaced()
 	{
 		System.out.println("The following ships are now placed ");
-		String Minesweeper="Minesweeper NOT Placed";
-		String Destroyer="Destroyer NOT Placed";
-		String Submarine="Submarine NOT placed";
-		String Battleship="Battleship NOT placed";
-		String AircraftCarrier="Aircraft Carrier NOT placed";
+	    String result=ships.get("Minesweeper").printIsPlaced()+"\n";
+	    result+=ships.get("Destroyer").printIsPlaced()+"\n";
+	    result+=ships.get("Submarine").printIsPlaced()+"\n";
+	    result+=ships.get("Battleship").printIsPlaced()+"\n";
+	    result+=ships.get("AircraftCarrier").printIsPlaced();
 		
-		if (minePlaced == true) 
-			Minesweeper="Minesweeper has been placed";
-
-		if (destPlaced == true) 
-			Destroyer="Destroyer has been placed";
-		
-		if (subPlaced == true) 
-			Submarine="Submarine has been placed";
-		
-		if (battlePlaced == true)
-			Battleship="Battleship has been placed";
-		
-		if(isAirPlaced() ==true)
-			AircraftCarrier="Aircraft Carrier has been placed";
-		
-		return Minesweeper + "\n" + Destroyer + "\n" + Submarine + "\n" + Battleship + "\n" + AircraftCarrier;
+		return result;
 	}
 	public void setAirPlaced(boolean airPlaced) {
-		this.airPlaced = airPlaced;
+		ships.get("AircraftCarrier").setShipAsPlaced();
 	}
 	public boolean isAirPlaced() {
-		return airPlaced;
+		if(!ships.containsKey("AircraftCarrier"))return false;
+		return ships.get("AircraftCarrier").checkIsShipPlaced();
 	}
 	public boolean checkIsShipPlaced(Ship ship) {
-		Class<? extends Ship> shipclass = ship.getClass();
-		if(shipclass.equals(AircraftCarrier.class))
-			return airPlaced;
-		if(shipclass.equals(Battleship.class))
-			return battlePlaced;
-		if(shipclass.equals(Destroyer.class))
-			return destPlaced;
-		if(shipclass.equals(Submarine.class))
-			return subPlaced;
-		if(shipclass.equals(Minesweeper.class))
-			return minePlaced;
-		return false;	
+		return ship.checkIsShipPlaced();	
 	}
 	public void setShipAsPlaced(Ship ship) {
-		Class<? extends Ship> shipClass = ship.getClass();
-		if(shipClass.equals(AircraftCarrier.class))
-		{
-			airPlaced = true;
-		}
-		if(shipClass.equals(Battleship.class))
-		{
-			battlePlaced = true;
-		}
-		if(shipClass.equals(Destroyer.class))
-		{
-			destPlaced = true;
-		}
-		if(shipClass.equals(Submarine.class))
-		{
-			subPlaced = true;
-		}
-		if(shipClass.equals(Minesweeper.class))
-		{
-			minePlaced = true;
-		}
+		ship.setShipAsPlaced();
 		
 	}
 	
