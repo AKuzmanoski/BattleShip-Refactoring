@@ -336,9 +336,9 @@ public class InfluenceMap implements Serializable, Observer {
 			if (!cell.isHit()) {
 				if (p > 3
 						|| (!isTop(cell.getI(), cell.getJ())
-								&& above(right(cell)).isMiss()
+								&& above(right(get(i, j))).isMiss()
 								&& !isBottom(cell.getI(), cell.getJ()) && below(
-									right(cell)).isMiss())) {
+									right(get(i, j))).isMiss())) {
 					cell.add(9);
 					return;
 				} else
@@ -360,9 +360,9 @@ public class InfluenceMap implements Serializable, Observer {
 			if (!cell.isHit()) {
 				if (p > 3
 						|| (!isTop(cell.getI(), cell.getJ())
-								&& above(left(cell)).isMiss()
+								&& above(left(get(i, j))).isMiss()
 								&& !isBottom(cell.getI(), cell.getJ()) && below(
-									left(cell)).isMiss())) {
+									left(get(i, j))).isMiss())) {
 					cell.add(9);
 					return;
 				} else
@@ -384,9 +384,9 @@ public class InfluenceMap implements Serializable, Observer {
 			if (!cell.isHit()) {
 				if (p > 3
 						|| (!isLeft(cell.getI(), cell.getJ())
-								&& above(left(cell)).isMiss()
+								&& above(left(get(i, j))).isMiss()
 								&& !isRight(cell.getI(), cell.getJ()) && above(
-									right(cell)).isMiss())) {
+									right(get(i, j))).isMiss())) {
 					cell.add(9);
 					return;
 				} else
@@ -408,9 +408,9 @@ public class InfluenceMap implements Serializable, Observer {
 			if (!cell.isHit()) {
 				if (p > 3
 						|| (!isLeft(cell.getI(), cell.getJ())
-								&& below(left(cell)).isMiss()
+								&& below(left(get(i, j))).isMiss()
 								&& !isRight(cell.getI(), cell.getJ()) && below(
-									right(cell)).isMiss())) {
+									right(get(i, j))).isMiss())) {
 					cell.add(9);
 					return;
 				} else

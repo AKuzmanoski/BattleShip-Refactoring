@@ -13,6 +13,9 @@ import Battleships.exception.PositionOccupiedException;
 
 public class Battleship extends Ship implements Serializable
 {
+	public Battleship() {
+		super(4);
+	}
 		
 	public Battleship(Grid board ,int i, int j, boolean isHorizontal)
 	{

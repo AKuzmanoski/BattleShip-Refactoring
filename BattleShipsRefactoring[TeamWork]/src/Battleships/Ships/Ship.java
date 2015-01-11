@@ -17,6 +17,10 @@ public abstract class Ship implements Serializable
 	protected int intactSegments;
 	protected boolean isPlaced;
 	
+	public Ship() {
+		isPlaced = false;
+	}
+	
 	public Ship(int intactSegments) {
 		super();
 		this.intactSegments = intactSegments;

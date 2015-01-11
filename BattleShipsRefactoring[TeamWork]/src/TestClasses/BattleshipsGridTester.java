@@ -64,10 +64,7 @@ public class BattleshipsGridTester {
 		
 		// Check valid place for ship
 		Assert.assertEquals(false, grid.isValidPlaceForAShip(5, 5));
-		
-		// Set air placed
-		grid.setAirPlaced(false);
-		
+				
 		// Shot
 		Assert.assertEquals(false, grid.shot(5, 5));
 		

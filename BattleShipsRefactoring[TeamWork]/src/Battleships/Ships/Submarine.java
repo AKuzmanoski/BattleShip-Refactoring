@@ -25,6 +25,10 @@ import java.io.Serializable;
 import Battleships.Grid;
 
 public class Submarine extends Ship implements Serializable {
+	
+	public Submarine() {
+		super(3);
+	}
 
 	public Submarine(Grid board, int i, int j, boolean isHorizontal) {
 		
@@ -38,7 +42,7 @@ public class Submarine extends Ship implements Serializable {
 	@Override
 	public String printIsPlaced() {
 		if(isPlaced){
-			return "";
+			return "Submarine has been placed";
 		}
 		return "Submarine NOT placed";
 	}

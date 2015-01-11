@@ -46,6 +46,12 @@ public class Grid implements Serializable
 	public Grid(int i, int j)
 	{
 		ships=new HashMap<>();
+		ships.put("Minesweeper", new Minesweeper());
+		ships.put("Destroyer", new Destroyer());
+		ships.put("AircraftCarrier" , new AircraftCarrier());
+		ships.put("Submarine", new Submarine());
+		ships.put("Battleship", new Battleship());
+		
 		userRow = i;
 		userColumn = j;
 		
@@ -505,11 +511,11 @@ public boolean addAir(int i, int j, int s)
 	*/
 	public String printIsSunk()
 	{
-		 String result=ships.get("Minesweeper").printIsPlaced()+"\n";
-		    result+=ships.get("Submarine").printIsPlaced()+"\n";
-		    result+=ships.get("Destroyer").printIsPlaced()+"\n";
-		    result+=ships.get("Battleship").printIsPlaced()+"\n";
-		    result+=ships.get("AircraftCarrier").printIsPlaced();
+		 String result=ships.get("Minesweeper").printIsSunk()+"\n";
+		    result+=ships.get("Submarine").printIsSunk()+"\n";
+		    result+=ships.get("Destroyer").printIsSunk()+"\n";
+		    result+=ships.get("Battleship").printIsSunk()+"\n";
+		    result+=ships.get("AircraftCarrier").printIsSunk();
 		
 		return result;
 	}

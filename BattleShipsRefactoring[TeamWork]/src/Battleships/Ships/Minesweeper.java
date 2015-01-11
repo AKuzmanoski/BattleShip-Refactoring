@@ -11,6 +11,9 @@ import Battleships.Grid;
 public class Minesweeper extends Ship implements Serializable
 {
 
+	public Minesweeper() {
+		super(2);
+	}
 	
 	public Minesweeper(Grid board, int i, int j, boolean isHorizontal)
 	{

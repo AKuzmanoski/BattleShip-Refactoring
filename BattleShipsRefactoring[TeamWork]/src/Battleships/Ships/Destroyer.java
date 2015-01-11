@@ -13,6 +13,9 @@ import Battleships.Grid;
 public class Destroyer extends Ship implements Serializable {
 	//remainingIntactCells renamed to Intactsegments
 
+	public Destroyer() {
+		super(3);
+	}
 
 	public Destroyer(Grid board, int i, int j, boolean isHorizontal) {
 		super(3);

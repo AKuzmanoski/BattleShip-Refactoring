@@ -12,6 +12,9 @@ import Battleships.Grid;
 
 public class AircraftCarrier extends Ship implements Serializable {
 	
+	public AircraftCarrier() {
+		super(5);
+	}
 
 	public AircraftCarrier(Grid board, int i, int j, boolean isHorizontal) {
 		super(5);
