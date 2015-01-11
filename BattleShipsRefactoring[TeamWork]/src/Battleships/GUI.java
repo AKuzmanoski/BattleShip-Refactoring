@@ -331,17 +331,7 @@ public class GUI extends JFrame
 		this.setVisible(true);	
 
 	}
-	
-	public void paintComponent(Graphics g)
-	{
-		//super.paint(g);
-		//Graphics2D g2 = (Graphics2D)g;
 		
-	}
-		
-	
-		
-	
 	public String placeAir(int i, int j)
 	{
 		String out ="";
