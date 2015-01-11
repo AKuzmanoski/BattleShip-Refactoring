@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<CteObject id="c0">
+    <!--Created by CTE XL 3.5.3-->
+    <Tree id="c1" name="Agent.cte" root="c2">
+        <Composition id="c2" name="Agent" style="color:#000000; font-size:9px; background-color:#ffffff; font-family:'Segoe UI'" x="420" y="32">
+            <Classification id="c53" name="placeShips" x="165" y="87">
+                <Class id="c56" name="place" x="138" y="139"/>
+                <Class id="c59" name="dontPlace" x="197" y="139"/>
+            </Classification>
+            <Composition id="c14" name="nextShot" x="320" y="87">
+                <Classification id="c23" name="numOfHotspots" x="302" y="140">
+                    <Class id="c26" name="0" x="281" y="192"/>
+                    <Class id="c29" name="1" x="327" y="192"/>
+                    <Class id="c32" name="more" x="383" y="192"/>
+                </Classification>
+            </Composition>
+            <Classification id="c65" name="setSunk" x="464" y="87">
+                <Class id="c68" name="set" x="442" y="139"/>
+                <Class id="c71" name="dontSet" x="488" y="139"/>
+            </Classification>
+            <Classification id="c41" name="getI" x="560" y="87">
+                <Class id="c35" name="test" x="560" y="139"/>
+            </Classification>
+            <Classification id="c44" name="getJ" x="616" y="87">
+                <Class id="c38" name="test" x="616" y="139"/>
+            </Classification>
+            <Classification id="c47" name="getMap" x="672" y="87">
+                <Class id="c50" name="test" x="681" y="139"/>
+            </Classification>
+        </Composition>
+    </Tree>
+    <TestGroup id="c3" name="">
+        <TestCase id="c74" name="Testcase 1">
+            <Marks true="c56 c26 c68 c35 c38 c50 "/>
+        </TestCase>
+        <TestCase id="c77" name="Testcase 2">
+            <Marks true="c35 c38 c50 c29 c68 c56 "/>
+        </TestCase>
+        <TestCase id="c80" name="Testcase 3">
+            <Marks true="c35 c38 c50 c68 c32 c56 "/>
+        </TestCase>
+        <TestCase id="c101" name="Testcase 4">
+            <Marks true="c59 c26 c71 c35 c38 c50 "/>
+        </TestCase>
+    </TestGroup>
+</CteObject>
