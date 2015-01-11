@@ -106,7 +106,6 @@ public abstract class Ship implements Serializable
 	public boolean checkIsShipPlaced(){
 		return isPlaced;
 	}
-	public abstract String printIsPlaced();
-	public abstract String printIsSunk();	
+
 	
 }

@@ -26,22 +26,7 @@ public class AircraftCarrier extends Ship implements Serializable {
 		return 5;
 	}
 
-	@Override
-	public String printIsPlaced() {
-		if(isPlaced){
-			return "Aircraft Carrier has been placed";
-		}
-		return "Aircraft Carrier NOT placed";
-	}
-
-	@Override
-	public String printIsSunk() {
-		if(isSunk()){
-			return "Aircraft Carrier is SUNK";
-		}else{
-			return "Aircraft Carrier is intact";
-		}
-	}
+	
 
 	
 

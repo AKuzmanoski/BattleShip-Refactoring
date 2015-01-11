@@ -26,21 +26,6 @@ public class Battleship extends Ship implements Serializable
 	public int shipGridValue() {
 		return 4;
 	}
-	@Override
-	public String printIsPlaced() {
-		if(isPlaced){
-			return "Battleship has been placed";
-		}else{
-			return "Battleship NOT placed";
-		}
-	}
-	@Override
-	public String printIsSunk() {
-		if(isSunk()){
-			return "Battleship is SUNK";
-		}else{
-			return "Battleship is intact";
-		}
-	}
+	
 	
 }

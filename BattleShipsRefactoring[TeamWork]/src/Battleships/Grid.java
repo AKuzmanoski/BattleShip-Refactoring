@@ -90,14 +90,8 @@ public class Grid implements Serializable
 		return (index > 1 && index < 8 ) ;
 	}
 	public boolean isValidPlaceForAShip(int i, int j)
-	{
-		int index;
-		index = this.getGridVal(i,j);
-
-		if (validPlace(index)) 
-			return true;
-		
-		else return false;
+	{	
+		return  (validPlace(this.getGridVal(i,j))) ;
 		
 	}
 	
@@ -505,37 +499,7 @@ public boolean addAir(int i, int j, int s)
 		return r;
 	}
 	
-	/**
-		Returns a string output of the status of the ships on the grid, whever they are
-		sunk or not.
-	*/
-	public String printIsSunk()
-	{
-		 String result=ships.get("Minesweeper").printIsSunk()+"\n";
-		    result+=ships.get("Submarine").printIsSunk()+"\n";
-		    result+=ships.get("Destroyer").printIsSunk()+"\n";
-		    result+=ships.get("Battleship").printIsSunk()+"\n";
-		    result+=ships.get("AircraftCarrier").printIsSunk();
-		
-		return result;
-	}
-	
-	
-	/**
-		Returns the a string returning the value of each ship's IsPlaced flag. If a ship is placed this flag will 
-		change to true and the this method will return a string confirming this. 
-	*/
-	public String printIsPlaced()
-	{
-		System.out.println("The following ships are now placed ");
-	    String result=ships.get("Minesweeper").printIsPlaced()+"\n";
-	    result+=ships.get("Destroyer").printIsPlaced()+"\n";
-	    result+=ships.get("Submarine").printIsPlaced()+"\n";
-	    result+=ships.get("Battleship").printIsPlaced()+"\n";
-	    result+=ships.get("AircraftCarrier").printIsPlaced();
-		
-		return result;
-	}
+
 	public void setAirPlaced(boolean airPlaced) {
 		ships.get("AircraftCarrier").setShipAsPlaced();
 	}

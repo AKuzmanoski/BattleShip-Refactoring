@@ -22,15 +22,7 @@ class GUI extends JFrame
 		contentPane.setLayout(new BorderLayout(2,1));
 		this.setResizable(false);
 		
-		
-		
-		
-
-		
-		data.minePlaced = false;
-		data.destPlaced = false;
-		data.subPlaced = false;
-		data.battlePlaced = false;
+		resetPlaced();
 		
 		setHoriz(true);
 		data.showMap= true;
@@ -209,6 +201,18 @@ class GUI extends JFrame
 		this.setVisible(true);
 			
 	}
+		private void resetPlaced(){
+			data.minePlaced = false;
+			data.destPlaced = false;
+			data.subPlaced = false;
+			data.battlePlaced = false;
+		}
+		private void resetSunk(){
+			data.agentMineSunk= false;
+			 data.agentDestSunk= false;
+			 data.agentSubSunk= false;		
+			 data.playerMineSunk= false;
+		}
 	
 	public void setOut(String s)
 	{
@@ -300,23 +304,10 @@ class GUI extends JFrame
 		 setHoriz(false);
 		 data.showMap= false;
 		
-		 data.minePlaced= false;
-		 data.destPlaced= false;
-		 data.subPlaced= false;
-		 data.battlePlaced= false;
+		 resetPlaced();
 		
-
-		 data.agentMineSunk= false;
-		 data.agentDestSunk= false;
-		 data.agentSubSunk= false;
-		 		
-		 data.playerMineSunk= false;
+		 resetSunk();
 		 			 		
-		data.minePlaced = false;
-		data.destPlaced = false;
-		data.subPlaced = false;
-		data.battlePlaced = false;
-	
 		
 		setHoriz(true);
 		data.showMap= true;
@@ -355,7 +346,7 @@ class GUI extends JFrame
 			if(isShipRotatedHorizonally())
 			{
 				boolean valid;
-				valid = data.gameState.playerHomeGrid.addAir(i,j,0);
+				valid = data.gameState.playerHomeGrid.addAir(i,j,0);  // razlicno
 		
 				Graphics hp = data.homePanel.getGraphics();
 		
@@ -377,7 +368,7 @@ class GUI extends JFrame
 		else 
 		{
 			boolean valid;
-			valid = data.gameState.playerHomeGrid.addAir(i,j,1);
+			valid = data.gameState.playerHomeGrid.addAir(i,j,1); //razlicno
 			if(valid)
 			{
 				Graphics hp = data.homePanel.getGraphics();	
@@ -697,9 +688,12 @@ class GUI extends JFrame
 		deployment= true;
 	}*/
 	
+	private boolean shipsPlaced(){
+		return (data.minePlaced && data.destPlaced && data.subPlaced &&	data.battlePlaced && data.gameState.playerHomeGrid.isAirPlaced());
+	}
 	public void endDeploymentPhase()
 	{
-		if(data.minePlaced && data.destPlaced && data.subPlaced &&	data.battlePlaced && data.gameState.playerHomeGrid.isAirPlaced())
+		if(shipsPlaced())
 		data.gameState.SetAllShipsDeployed();
 		getOutText().setText("All Ships Deployed, Player's Turn! Click on the left grid to fire shots");
 		this.data.gameState.setPlayerTurn();
@@ -756,16 +750,20 @@ class GUI extends JFrame
 	
 	
 	
-	
-	
+    private boolean validForShooting(){
+    	return (data.gameState.agentTurn && data.gameState.isBothPlayerAndAgentShipsDeployed());
+    }
+	private boolean takenShot(int sqrVal){
+		return (sqrVal < 0 || sqrVal==1);
+	}
 	public void agentShot(int X, int Y)
 		
 	{
-		if(data.gameState.agentTurn && data.gameState.isBothPlayerAndAgentShipsDeployed())
+		if(validForShooting())
 		{
 		int sqrVal = data.gameState.playerHomeGrid.getGridVal(X,Y);
 						
-						if(sqrVal < 0 || sqrVal==1)
+						if(takenShot(sqrVal))
 						{
 							System.out.println("Shot already taken! Have another go"); 
 						}
@@ -798,9 +796,7 @@ class GUI extends JFrame
 						System.out.println("compAtt");						
 						System.out.println(data.gameState.compAtt.toString());
 						
-						if(sqrVal==0)
-							this.data.gameState.setPlayerTurn();
-				
+						
 		}		
 		
 		System.out.println("Map is \n" + data.gameState.influenceMap.toString());
@@ -887,6 +883,9 @@ class AttackMousePressListener extends MouseAdapter
 			}
 
 			private int resolveAxisCoOrdinate(int x) {
+				if(x>=200) return -1;
+			    return x/20;
+			    /*
 				if (x < 20)
 					return 0;
 				else if (x <40)
@@ -908,6 +907,7 @@ class AttackMousePressListener extends MouseAdapter
 				else if (x <200)
 					return 9;
 				return -1;
+				*/
 			}
 
 
@@ -952,7 +952,11 @@ class HomeMousePressListener extends MouseAdapter
 				//repaint();
 			}
 			private int resolveAxisCoOrdinate(int x) {
-				if (x < 20)
+				
+				if(x>=200) return -1;
+			    return x/20;
+				
+				/*if (x < 20)
 					return 0;
 				else if (x <40)
 					return 1;
@@ -973,6 +977,7 @@ class HomeMousePressListener extends MouseAdapter
 				else if (x <200)
 					return 9;
 				return -1;
+				*/
 			}
 
 }

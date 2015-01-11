@@ -38,21 +38,5 @@ public class Destroyer extends Ship implements Serializable {
 		return 7;
 	}
 
-	@Override
-	public String printIsPlaced() {
-		if(isPlaced){
-			return "Destroyer has been placed";
-		}
-		return "Destroyer NOT Placed";
-	}
 
-	@Override
-	public String printIsSunk() {
-		if(isSunk()){
-			return "Destroyer is SUNK";
-		}else{
-			return "Destroyer is intact";
-		}
-	}
-	
 }

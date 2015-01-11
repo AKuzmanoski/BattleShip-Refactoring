@@ -25,23 +25,6 @@ public class Minesweeper extends Ship implements Serializable
 	public int shipGridValue() {
 		return 2;
 	}
-	@Override
-	public String printIsPlaced() {
-		if(isPlaced){
-			return "Minesweeper has been placed";
-		}
-		else{
-			return "Minesweeper NOT Placed";
-		}
-	}
-	@Override
-	public String printIsSunk() {
-		if(isSunk()){
-			return "Minesweeper is SUNK";
-		}else{
-			return "Minesweeper is intact";
-		}
-	}
 	
 
 }
