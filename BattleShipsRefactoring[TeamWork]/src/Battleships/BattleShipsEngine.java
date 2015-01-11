@@ -60,7 +60,7 @@ public class BattleShipsEngine {
 				//PlayerDeploymentPhase, wait for player to place all their ships
 		}
 		
-		gui.data.gameState.addAgentShips(smith.placeShips());
+		gui.data.gameState.addAgentShips(smith.getGrid());
 		
 		
 
@@ -83,11 +83,13 @@ public class BattleShipsEngine {
 			}
 			gui.repaint();
 		
+			smith.setAttackGrid( gui.data.gameState.compAtt);
+			smith.setMap(gui.data.gameState.influenceMap);
 			while(gui.data.gameState.isAgentTurn() && !gui.data.gameState.IsGameOver())
 			{
 			
 				System.out.println("agent turn");
-				smith.nextShot(gui.data.gameState.influenceMap, gui.data.gameState.compAtt);
+				smith.nextShot();
 				gui.agentShot(smith.getI(),smith.getJ());
 				System.out.println("shot at " + smith.getI() + " " +smith.getJ());
 				System.out.println(gui.data.gameState.compAtt.toString());

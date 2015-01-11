@@ -11,12 +11,13 @@ public class BattleShipsAgentTester {
 	@Test
 	public void testcase1() {
 		Agent agent = new Agent();
-		Grid attackGrid = agent.placeShips();
-		agent.placeShips();
+		Grid attackGrid = agent.getGrid();
 
 		InfluenceMap map = new InfluenceMap();
-
-		agent.nextShot(map, attackGrid);
+		agent.setAttackGrid(attackGrid);
+		agent.setMap(map);
+		
+		agent.nextShot();
 
 		Assert.assertEquals(true,
 				map.getValue(agent.getI(), agent.getJ()) == map
@@ -36,8 +37,7 @@ public class BattleShipsAgentTester {
 	@Test
 	public void testcase2() {
 		Agent agent = new Agent();
-		Grid attackGrid = agent.placeShips();
-		agent.placeShips();
+		Grid attackGrid = agent.getGrid();
 
 		InfluenceMap map = new InfluenceMap();
 		map.miss(3, 3);
@@ -49,8 +49,10 @@ public class BattleShipsAgentTester {
 
 		int i = map.getHotspotI();
 		int j = map.getHotspotJ();
+		agent.setAttackGrid(attackGrid);
+		agent.setMap(map);
 
-		agent.nextShot(map, attackGrid);
+		agent.nextShot();
 
 		if (attackGrid.getGridVal(i, j) == 0) {
 			Assert.assertEquals(
@@ -83,8 +85,7 @@ public class BattleShipsAgentTester {
 	@Test
 	public void testcase3() {
 		Agent agent = new Agent();
-		Grid attackGrid = agent.placeShips();
-		agent.placeShips();
+		Grid attackGrid = agent.getGrid();
 
 		InfluenceMap map = new InfluenceMap();
 		map.hit(4, 6);
@@ -92,8 +93,10 @@ public class BattleShipsAgentTester {
 
 		int i = map.getHotspotI();
 		int j = map.getHotspotJ();
+		agent.setAttackGrid(attackGrid);
+		agent.setMap(map);
 
-		agent.nextShot(map, attackGrid);
+		agent.nextShot();
 
 		if (attackGrid.getGridVal(i, j) == 0) {
 			Assert.assertEquals(

@@ -1,173 +1,166 @@
 package Battleships;
 
-/*
- * Author: Michael
- * Created: 16 April 2005 12:39:10
- * Modified: 16 April 2005 12:39:10
- */
 import java.util.Random;
 
+/**
+ * @author User Michael
+ * @since 16 April 2005 12:39:10
+ * @version 16 April 2005 12:39:10
+ */
 public class Agent {
-	private InfluenceMap map = null;
-	private Grid grid = null;
+	private InfluenceMap map;
+	private Grid grid;
+	private Grid attackGrid;
 	private int i = -1;
 	private int j = -1;
-	private Random randomNumberGenerator;
+	private Random generator;
 
+	/**
+	 * Constructor that initializes Agent with map and grids
+	 */
+	public Agent() {
+		generator = new Random();
+		grid = new Grid(10, 10);
+		attackGrid = new Grid(10, 10);
+		map = new InfluenceMap();
+		placeShips();
+	}
+
+	/**
+	 * The row index of the last shot
+	 * 
+	 * @return the row index
+	 */
 	public int getI() {
 		return i;
 	}
 
+	/**
+	 * The column index of the last shot
+	 * 
+	 * @return the column index
+	 */
 	public int getJ() {
 		return j;
 	}
 
-	public InfluenceMap setSunk() {
+	/**
+	 * Sunks all hitted cells
+	 */
+	public void setSunk() {
 		for (int i = 0; i < map.getHeight(); i++) {
 			for (int j = 0; j < map.getWidth(); j++) {
 				map.sunk(i, j);
 			}
 		}
-		return map;
 	}
 
-	public InfluenceMap setSunk(int i, int j) {
+	/**
+	 * Sunks cell on the given position
+	 * 
+	 * @param i
+	 *            the row index
+	 * @param j
+	 *            the column index
+	 */
+	public void setSunk(int i, int j) {
 		map.sunk(i, j);
-		return map;
 	}
 
-	public void nextShot(InfluenceMap m1, Grid Attackgrid) {
-		map = m1;
-
-		grid = Attackgrid;
-
+	/**
+	 * Generates next shot
+	 */
+	public void nextShot() {
 		if (map.getNumberOfHotspots() == 0) {
-			NumberGenerator Powergen = new NumberGenerator();
-
-			// while(compAtt.getGridVal(i-
-			i = Powergen.rand(10);
-			j = Powergen.rand(10);
+			i = generator.nextInt(map.getHeight());
+			j = generator.nextInt(map.getWidth());
 		}
-
-		// if there is only one HS get it's co-ordinates on the IM
-
 		if (map.getNumberOfHotspots() == 1) {
-			int checki = map.getHotspotI();
-			int checkj = map.getHotspotJ();
+			i = map.getHotspotI();
+			j = map.getHotspotJ();
 
-			if (!grid.isEmpty(checki, checkj)) {
-				map.set(checki, checkj, 0);
-			}
-
-			// if the element on the attack grid has not been hit then set i,j
-			// to it.
-			if (grid.isEmpty(checki, checkj)) {
-			}
-
-			else // set i, j to a random that has not been hit
-			{
-				randomNumberGenerator = new Random();
+			if (!attackGrid.isEmpty(i, j)) {
+				map.set(i, j, 0);
 
 				// create random numbers
 				while (true) {
-					checki = randomNumberGenerator.nextInt(10);
-					checkj = randomNumberGenerator.nextInt(10);
+					i = generator.nextInt(10);
+					j = generator.nextInt(10);
 					// if co-ord is empty then set i,j to them
-					if (grid.isEmpty(checki, checkj)) {
+					if (attackGrid.isEmpty(i, j)) {
 						break;
 					}
 				}
-
 			}
-			
-			i = checki;
-			j = checkj;
-
 		}
-
-		// code to choose hotspots
-		// pulls the first pair of co-ords from an array
 		if (map.getNumberOfHotspots() > 1) {
-			boolean noneFound = false;
-			System.out.println("Target multiple hotspots");
-			int[] refs = map.getIntHotspots();
-
-			if (grid.getGridVal(refs[0], refs[1]) == 0) {
-				i = refs[0];
-				j = refs[1];
+			if (attackGrid.getGridVal(map.getIntHotspots()[0],
+					map.getIntHotspots()[1]) == 0) {
+				i = map.getIntHotspots()[0];
+				j = map.getIntHotspots()[1];
+			} else {
+				i = map.getIntHotspots()[map.getIntHotspots().length - 1];
+				j = map.getIntHotspots()[map.getIntHotspots().length - 2];
 			}
-
-			else {
-				i = refs[refs.length - 1];
-				j = refs[refs.length - 2];
-			}
-
-			int length = refs.length - 2;
-
-			for (int z = 0; z < length; z++) {
-				refs[z] = refs[z + 2];
-				// refs[z+1] = z+2;
-			}
-
 		}
-
 	}
 
-	public Grid placeShips() {
-		// boolean
+	/**
+	 * Sets influence map
+	 * 
+	 * @param map
+	 */
+	public void setMap(InfluenceMap map) {
+		this.map = map;
+	}
+
+	/**
+	 * Sets grid which would be attacked
+	 * 
+	 * @param attackGrid
+	 */
+	public void setAttackGrid(Grid attackGrid) {
+		this.attackGrid = attackGrid;
+	}
+
+	/**
+	 * Places all ships
+	 */
+	private void placeShips() {
 		grid = new Grid(10, 10);
-
 		while (!grid.allShipsPlaced()) {
-			NumberGenerator gen = new NumberGenerator();
-			int x = gen.rand(10);
-			int y = gen.rand(10);
-			int o = gen.rand(1);
+			grid.addSub(generator.nextInt(10), generator.nextInt(10),
+					generator.nextInt(2));
 
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);
-			System.out.println("vertical sub x = " + x + "\n");
-			System.out.println("vertical sub y = " + y + "\n");
-			grid.addSub(x, y, o);
+			grid.addBattle(generator.nextInt(10), generator.nextInt(10),
+					generator.nextInt(2));
 
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);
-			System.out.println("vertical battle x = " + x + "\n");
-			System.out.println("vertical battle y = " + y + "\n");
-			grid.addBattle(x, y, o);
+			grid.addAir(generator.nextInt(10), generator.nextInt(10),
+					generator.nextInt(2));
 
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);
-			System.out.println("vertical air x = " + x + "\n");
-			System.out.println("vertical air y = " + y + "\n");
-			grid.addAir(x, y, o);
+			grid.addMine(generator.nextInt(10), generator.nextInt(10),
+					generator.nextInt(2));
 
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);
-			System.out.println("vertical mine x = " + x + "\n");
-			System.out.println("vertical mine y = " + y + "\n");
-			grid.addMine(x, y, o);
-
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);
-			System.out.println("horizontal dest x = " + x + "\n");
-			System.out.println("horizontal dest y = " + y + "\n");
-			grid.addDest(x, y, o);
-
+			grid.addDest(generator.nextInt(10), generator.nextInt(10),
+					generator.nextInt(2));
 		}
+	}
 
-		System.out.println("agent grid");
-		System.out.println(grid.toString());
-
+	/**
+	 * Returns Agent's grid
+	 * 
+	 * @return {@link Grid}
+	 */
+	public Grid getGrid() {
 		return grid;
 	}
 
+	/**
+	 * Returns Agent's map
+	 * 
+	 * @return {@link InfluenceMap}
+	 */
 	public InfluenceMap getMap() {
 		return map;
 	}
-
 }
