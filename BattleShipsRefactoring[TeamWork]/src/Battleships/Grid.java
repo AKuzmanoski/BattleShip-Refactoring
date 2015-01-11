@@ -515,5 +515,13 @@ public boolean addAir(int i, int j, int s)
 		
 	}
 	
-
+	/**
+	 * Answers to the question whether the grid cell is empty (no ship is placed on).
+	 * @param i the row index
+	 * @param j the column index
+	 * @return <code>true</code> if cell is empty, <code>false</code> in every other case
+	 */
+	public boolean isEmpty(int i, int j) {
+		return getGridVal(i, j) == 0;
+	}
 }
