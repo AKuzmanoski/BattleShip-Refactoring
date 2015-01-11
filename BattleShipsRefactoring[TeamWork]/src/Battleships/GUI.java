@@ -1,6 +1,7 @@
 package Battleships;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -8,7 +9,7 @@ import Battleships.Graphics.*;
 
 import java.util.*;	
 	
-class GUI extends JFrame
+public class GUI extends JFrame
 {
 	
 		BattleShipsEngine data = new BattleShipsEngine();
@@ -346,47 +347,33 @@ class GUI extends JFrame
 		String out ="";
 		if(!this.data.gameState.playerHomeGrid.checkAirPlaced())
 		{
-			if(isShipRotatedHorizonally())
-			{
-				boolean valid;
-				valid = data.gameState.playerHomeGrid.addAir(i,j,0);  // razlicno
-		
-				Graphics hp = data.homePanel.getGraphics();
-		
-				if(valid)
-				{	
-					AircraftCarrierH.paint(hp,(j*20),(i*20));
-					out = out + data.gameState.playerHomeGrid.toString();
-					data.gameState.playerHomeGrid.setAirPlaced(true);
-					getOutText().setText("Air Placed");
-				}
-				else
-				{
-					getOutText().setText("Aircraft Carrier Will Not Fit Here");
-					out ="not valid";
-					out = out + data.gameState.playerHomeGrid.toString();
-				}	
-			}
-		
-		else 
-		{
 			boolean valid;
-			valid = data.gameState.playerHomeGrid.addAir(i,j,1); //razlicno
-			if(valid)
-			{
-				Graphics hp = data.homePanel.getGraphics();	
-				AircraftCarrier.paint(hp,(j*20),(i*20));
-				out = out + data.gameState.playerHomeGrid.toString();
-				data.gameState.playerHomeGrid.setAirPlacedTrue();
-				getOutText().setText("Air Placed");
+			if(isShipRotatedHorizonally())
+			{			
+				valid = data.gameState.playerHomeGrid.addAir(i,j,0);  // razlicno
+			}else{
+				valid = data.gameState.playerHomeGrid.addAir(i,j,1); //razlicno
 			}
-			else
-			{
-				out ="not valid";
-				out = out + data.gameState.playerHomeGrid.toString();
-			}	
-		
-		}
+			
+			if(valid){
+				Graphics hp = data.homePanel.getGraphics();
+				if(isShipRotatedHorizonally()){
+					AircraftCarrierH.paint(hp,(j*20),(i*20));//razl
+				}else{
+					AircraftCarrier.paint(hp,(j*20),(i*20));//razl
+				}
+				
+				out = out + data.gameState.playerHomeGrid.toString();//isto
+				data.gameState.playerHomeGrid.setAirPlacedTrue();//isto
+				getOutText().setText("Air Placed");//isto
+			}
+			else{
+				if(isShipRotatedHorizonally()){
+				getOutText().setText("Aircraft Carrier Will Not Fit Here");
+				}
+				out ="not valid";//isto
+				out = out + data.gameState.playerHomeGrid.toString();//isto
+			}
 		}
 		return out;
 	}
@@ -397,49 +384,35 @@ class GUI extends JFrame
 		String out ="";
 		if(data.gameState.playerHomeGrid.isAirPlaced() && !data.battlePlaced)
 		{
+			boolean valid;
 			if(isShipRotatedHorizonally())
 			{
-				boolean valid;
-				valid = data.gameState.playerHomeGrid.addBattle(i,j,0);
-		
-				Graphics hp = data.homePanel.getGraphics();
-		
-				if(valid)
-				{	
-					BattleshipH.paint(hp,(j*20),(i*20));
-					out = out + data.gameState.playerHomeGrid.toString();
-					data.battlePlaced = true;
-				//	outText.setText("Battleship Placed");
-				}
-				else
-				{
-					out ="not valid";
-					out = out + data.gameState.playerHomeGrid.toString();
-					getOutText().setText("Battleships Will Not Fit Here");
-				}	
+					valid = data.gameState.playerHomeGrid.addBattle(i,j,0);
 			}
-		
-		else 
-		{
-			boolean valid;
-			valid = data.gameState.playerHomeGrid.addBattle(i,j,1);
-			if(valid)
-			{
-				Graphics hp = data.homePanel.getGraphics();	
-				Battleship.paint(hp,(j*20),(i*20));
+			else{
+				    valid = data.gameState.playerHomeGrid.addBattle(i,j,1);
+			}
+			
+			if(valid){
+				Graphics hp = data.homePanel.getGraphics();		
+				if(isShipRotatedHorizonally()){
+					BattleshipH.paint(hp,(j*20),(i*20));
+				}else{
+					Battleship.paint(hp,(j*20),(i*20));
+				}
 				out = out + data.gameState.playerHomeGrid.toString();
 				data.battlePlaced = true;
-				getOutText().setText("Battleship Placed");
-			}
-			else
-			{
+				if(!isShipRotatedHorizonally()){
+					getOutText().setText("Battleship Placed");
+				}
+			}else{
 				out ="not valid";
 				out = out + data.gameState.playerHomeGrid.toString();
 				getOutText().setText("Battleships Will Not Fit Here");
-			}	
+			}
+				
+			}
 		
-		}
-		}
 		return out;
 	}	
 	
@@ -449,49 +422,34 @@ class GUI extends JFrame
 		String out ="";
 		if(data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && !data.destPlaced)
 		{
+			boolean valid;
 			if(isShipRotatedHorizonally())
 			{
-				boolean valid;
+	
 				valid = data.gameState.playerHomeGrid.addDest(i,j,0);
-		
-				Graphics hp = data.homePanel.getGraphics();
-		
-				if(valid)
-				{	
-					DestroyerH.paint(hp,(j*20),(i*20));
-					out = out + data.gameState.playerHomeGrid.toString();
-					data.destPlaced = true;
-					getOutText().setText("Destroyer Placed");
-				}
-				else
-				{
-					out ="not valid";
-					out = out + data.gameState.playerHomeGrid.toString();
-					getOutText().setText("Destroyer Will Not Fit Here");
-				}	
+			}else{
+				valid = data.gameState.playerHomeGrid.addDest(i,j,1);
 			}
-		
-		else 
-		{
-			boolean valid;
-			valid = data.gameState.playerHomeGrid.addDest(i,j,1);
-			if(valid)
-			{
-				Graphics hp = data.homePanel.getGraphics();	
-				Destroyer.paint(hp,(j*20),(i*20));
+			Graphics hp = data.homePanel.getGraphics();
+			
+			if(valid){
+				if(isShipRotatedHorizonally()){
+					DestroyerH.paint(hp,(j*20),(i*20));
+				}else{
+					Destroyer.paint(hp,(j*20),(i*20));
+				}
 				out = out + data.gameState.playerHomeGrid.toString();
 				data.destPlaced = true;
 				getOutText().setText("Destroyer Placed");
-			}
-			else
-			{
+			}else{
 				out ="not valid";
 				out = out + data.gameState.playerHomeGrid.toString();
-				
-			}	
+				if(isShipRotatedHorizonally()){
+					getOutText().setText("Destroyer Will Not Fit Here");//razl!!
+				}
+			}
+		}	
 		
-		}
-		}
 		return out;
 	}
 	
@@ -501,49 +459,38 @@ class GUI extends JFrame
 		String out ="";
 		if(data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && data.destPlaced && !data.subPlaced)
 		{
-			if(isShipRotatedHorizonally())
-			{
-				boolean valid;
-				valid = data.gameState.playerHomeGrid.addSub(i,j,0);
-		
-				Graphics hp = data.homePanel.getGraphics();
-		
-				if(valid)
-				{	
-					SubmarineH.paint(hp,(j*20),(i*20));
-					out = out + data.gameState.playerHomeGrid.toString();
-					data.subPlaced = true;
-					getOutText().setText("Submarine Placed");
-				}
-				else
-				{
-					out ="not valid";
-					out = out + data.gameState.playerHomeGrid.toString();
-					getOutText().setText("Submarine Will Not Fit Here");
-				}	
-			}
-		
-		else 
-		{
 			boolean valid;
-			valid = data.gameState.playerHomeGrid.addSub(i,j,1);
+			if(isShipRotatedHorizonally())
+			{	
+				valid = data.gameState.playerHomeGrid.addSub(i,j,0);
+			}
+			else{
+				valid = data.gameState.playerHomeGrid.addSub(i,j,1);
+			}
+			
+			Graphics hp = data.homePanel.getGraphics();
+		
 			if(valid)
-			{
-				Graphics hp = data.homePanel.getGraphics();	
-				Submarine.paint(hp,(j*20),(i*20));
-				out = out + data.gameState.playerHomeGrid.toString();
-				data.subPlaced = true;
-				getOutText().setText("Submarine Placed");
+			{	
+					if(isShipRotatedHorizonally()){
+						SubmarineH.paint(hp,(j*20),(i*20));
+					}else{
+						Submarine.paint(hp,(j*20),(i*20));
+					}
+					out = out + data.gameState.playerHomeGrid.toString();//isto
+					data.subPlaced = true;//isto
+					getOutText().setText("Submarine Placed");//isto
 			}
 			else
-			{
-				out ="not valid";
-				out = out + data.gameState.playerHomeGrid.toString();
-				getOutText().setText("Submarine Will Not Fit Here");
-			}	
+			  {
+					out ="not valid";//isto
+					out = out + data.gameState.playerHomeGrid.toString();//isto
+					getOutText().setText("Submarine Will Not Fit Here");//isto
+			  }	
+			}
 		
-		}
-		}
+		
+		
 		return out;
 	}	
 	
@@ -554,57 +501,41 @@ class GUI extends JFrame
 		String out ="";
 		if(data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && data.destPlaced && data.subPlaced && !data.minePlaced)
 		{
+			boolean valid;
 			if(isShipRotatedHorizonally())
 			{
-				boolean valid;
 				valid = data.gameState.playerHomeGrid.addMine(i,j,0);
+			}else{
+				valid = data.gameState.playerHomeGrid.addMine(i,j,1);
+			}
+			Graphics hp = data.homePanel.getGraphics();
 		
-				Graphics hp = data.homePanel.getGraphics();
-		
-				if(valid)
-				{	
+		    if(valid)
+			{	
+		    	if(isShipRotatedHorizonally()){
 					MinesweeperH.paint(hp,(j*20),(i*20));
-					out = out + data.gameState.playerHomeGrid.toString();
-					data.minePlaced = true;
-					getOutText().setText("Minesweeper Placed");
-				}
-				else
-				{
-					out ="not valid";
-					out = out + data.gameState.playerHomeGrid.toString();
-					getOutText().setText("Minesweeper Will Not Fit Here");
-				}	
+		    	}else{
+		    		Minesweeper.paint(hp,(j*20),(i*20));
+		    	}
+				out = out + data.gameState.playerHomeGrid.toString();//iso
+				data.minePlaced = true;//iso
+				getOutText().setText("Minesweeper Placed");//iso
 			}
-		
-		else 
-		{
-			boolean valid;
-			valid = data.gameState.playerHomeGrid.addMine(i,j,1);
-			if(valid)
-			{
-				Graphics hp = data.homePanel.getGraphics();	
-				Minesweeper.paint(hp,(j*20),(i*20));
-				out = out + data.gameState.playerHomeGrid.toString();
-				data.minePlaced = true;
-				getOutText().setText("Minesweeper Placed");
-			}
-			else
+			else//isto
 			{
 				out ="not valid";
 				out = out + data.gameState.playerHomeGrid.toString();
 				getOutText().setText("Minesweeper Will Not Fit Here");
 			}	
-		
-		}
+			
 		
 		if(data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && data.destPlaced && data.subPlaced && data.minePlaced)
-				this.endDeploymentPhase();
-			
+				this.endDeploymentPhase();		
 		}
-		
 		
 		return out;
 	}	
+	
 	
 	public boolean rotate()
 	{
