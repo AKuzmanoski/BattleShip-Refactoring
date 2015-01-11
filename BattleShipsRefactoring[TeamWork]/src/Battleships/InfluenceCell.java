@@ -13,7 +13,8 @@ public class InfluenceCell extends Observable {
 	private static final int hitValue = 9;
 	private static final int missValue = -5;
 	private static int hotspotValue;
-	private Position position;
+	private int i;
+	private int j;
 	private int value;
 
 	/**
@@ -25,7 +26,8 @@ public class InfluenceCell extends Observable {
 	 *            the column index
 	 */
 	public InfluenceCell(int i, int j) {
-		position = new Position(i, j);
+		this.i = i;
+		this.j = j;
 		this.value = 0;
 	}
 
@@ -34,15 +36,7 @@ public class InfluenceCell extends Observable {
 	 * @return the row index of the cell
 	 */
 	public int getI() {
-		return position.getI();
-	}
-	
-	/**
-	 * 
-	 * @return the position of the cell
-	 */
-	public Position getPosition() {
-		return position;
+		return i;
 	}
 
 	/**
@@ -50,7 +44,7 @@ public class InfluenceCell extends Observable {
 	 * @return the column index of the cell
 	 */
 	public int getJ() {
-		return position.getJ();
+		return j;
 	}
 
 	/**
@@ -116,6 +110,18 @@ public class InfluenceCell extends Observable {
 	 */
 	public void hit() {
 		this.setValue(InfluenceCell.hitValue);
+	}
+	
+	public void sunk(int value) {
+		if (!isHit()) {
+			if (isEven()) {
+				subtract(value);
+			}
+			
+			if (isOdd()) {
+				subtract(getHitvalue());
+			}
+		}
 	}
 
 	/**
@@ -187,7 +193,7 @@ public class InfluenceCell extends Observable {
 	 * Tests the value of the cell
 	 * @return <code>true</code> if value is odd, <code>false</code> if it is even
 	 */
-	public boolean isOdd() {
+	private boolean isOdd() {
 		return value % 2 == 1;
 	}
 
@@ -195,7 +201,7 @@ public class InfluenceCell extends Observable {
 	 * Tests the value of the cell
 	 * @return <code>true</code> if value is even, <code>false</code> if it is odd
 	 */
-	public boolean isEven() {
+	private boolean isEven() {
 		return value % 2 == 0;
 	}
 

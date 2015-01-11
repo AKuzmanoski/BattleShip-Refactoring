@@ -1,24 +1,18 @@
 package Battleships;
 
+import java.io.Serializable;
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * @author Michael
  * @since 12 February 2005 14:57:34
  * @modified 12 February 2005 14:57:34
  */
-
-import java.io.Serializable;
-import java.util.Observable;
-import java.util.Observer;
-
 public class InfluenceMap implements Serializable, Observer {
-
-	/**
-	 * Serial number
-	 */
 	private static final long serialVersionUID = 8530256226538215227L;
 	private InfluenceCell[][] map;
-	private int numberOfTurns = 9999;
-	private String coOrds = "";
+	private int numberOfTurns;
 
 	/**
 	 * Creates an influence map from a two dimensional array as a 10 by 10
@@ -26,7 +20,6 @@ public class InfluenceMap implements Serializable, Observer {
 	 */
 	public InfluenceMap() {
 		map = new InfluenceCell[10][10];
-
 		for (int a = 0; a < getHeight(); a++)
 			for (int b = 0; b < getWidth(); b++) {
 				map[a][b] = new InfluenceCell(a, b);
@@ -38,7 +31,7 @@ public class InfluenceMap implements Serializable, Observer {
 	/**
 	 * @return the actual width of the map
 	 */
-	public int getWidth() {
+	protected int getWidth() {
 		if (getHeight() == 0)
 			return 0;
 		else
@@ -48,7 +41,7 @@ public class InfluenceMap implements Serializable, Observer {
 	/**
 	 * @return the actual height of the map
 	 */
-	public int getHeight() {
+	protected int getHeight() {
 		if (map == null)
 			return 0;
 		return map.length;
@@ -87,7 +80,7 @@ public class InfluenceMap implements Serializable, Observer {
 			throw new IllegalArgumentException("Number cannot be negative");
 		if (i > getHeight() || j > getWidth())
 			throw new IllegalArgumentException(
-					"Number is bigger that the grid size");
+					"Number is bigger than the grid size");
 		return map[i][j];
 	}
 
@@ -117,16 +110,15 @@ public class InfluenceMap implements Serializable, Observer {
 	 *         influence value.
 	 */
 	public int getNumberOfHotspots() {
-		// TODO smeni ime na ova hs, me nervira
-		int hs = 0;
+		int numberOfHotspots = 0;
 		for (int i = 0; i < getHeight(); i++) {
 			for (int j = 0; j < getWidth(); j++) {
 				if (get(i, j).isHotspot()) {
-					hs++;
+					numberOfHotspots++;
 				}
 			}
 		}
-		return hs;
+		return numberOfHotspots;
 	}
 
 	/**
@@ -137,38 +129,34 @@ public class InfluenceMap implements Serializable, Observer {
 	 */
 	public String getHotspots() {
 		// concatanates the references of the hotspots into a string
+		String hotspotCoordinates = "";
 		for (int i = 0; i < getHeight(); i++) {
 			for (int j = 0; j < getWidth(); j++) {
-				if (get(i, j).isHotspot())
-					coOrds = coOrds + i + j;
+				if (get(i, j).isHotspot()) {
+					hotspotCoordinates += i;
+					hotspotCoordinates += j;
+				}
 			}
 		}
-		return coOrds;
+		return hotspotCoordinates;
 	}
 
 	/**
 	 * @return an {@link Integer} array containing the hotspots
 	 */
 	public int[] getIntHotspots() {
-		// TODO proveri iminja i ostali raboti
-		int hsNum = this.getNumberOfHotspots();
-		int[] refs = new int[hsNum * 2];
-		int ref1 = 0;
-		int ref2 = 1;
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
+		int[] hotspots = new int[getNumberOfHotspots() * 2];
+		int index = 0;
+		for (int i = 0; i < getHeight(); i++) {
+			for (int j = 0; j < getWidth(); j++) {
 				if (get(i, j).isHotspot()) {
-					for (int x = 0; x < hsNum; x++) {
-						refs[ref1] = i;
-						refs[ref2] = j;
-					}
-					ref1 = ref1 + 2;
-					ref2 = ref2 + 2;
+					hotspots[index] = i;
+					hotspots[index + 1] = j;
+					index += 2;
 				}
-
 			}
 		}
-		return refs;
+		return hotspots;
 	}
 
 	/**
@@ -204,71 +192,35 @@ public class InfluenceMap implements Serializable, Observer {
 	 */
 	public void hit(int i, int j) {
 		InfluenceCell cell = get(i, j);
-		if (cell.isHit()) {
-			// throw new IllegalArgumentException("Hit already taken");
-		}
 		cell.hit();
 
-		try { // if southern is not a hit, increament it
+		if (!isBottom(i, j)) {
 			if (!below(cell).isHit()) {
 				below(cell).add(2);
-			}
-
-			// if southern was also a hit and the northern isn't then increment
-			// eastern by 11
-			if (below(cell).isHit() && !above(cell).isHit()) {
+			} else if (!isTop(i, j) && !above(cell).isHit()) {
 				above(cell).add(11);
 			}
-
 		}
-
-		catch (Exception e) {
-			// do nothing
-		}
-
-		try { // if northern is not a hit, increament it
+		if (!isTop(i, j)) {
 			if (!above(cell).isHit()) {
 				above(cell).add(2);
-			}
-
-			// if northern is a hit and southern isn't then increment southern
-			// by 8
-			if (above(cell).isHit() && !below(cell).isHit()) {
+			} else if (!isBottom(i, j) && !below(cell).isHit()) {
 				below(cell).add(11);
 			}
 		}
-
-		catch (Exception e) {
-			// do nothing
-		}
-
-		try { // if eastern is not a hit, increment it
+		if (!isRight(i, j)) {
 			if (!right(cell).isHit()) {
 				right(cell).add(4);
-			}
-
-			// if eastern is a hit, and western isn't increment western by 11
-			if (right(cell).isHit() && !left(cell).isHit()) {
+			} else if (!isLeft(i, j) && !left(cell).isHit()) {
 				left(cell).add(11);
 			}
 		}
-
-		catch (Exception e) {
-			// do nothing
-		}
-
-		try { // western is not a hit increment it
-			if (!left(cell).isHit())
+		if (!isLeft(i, j)) {
+			if (!left(cell).isHit()) {
 				left(cell).add(4);
-
-			// western is a hit and eastern isn't increment eastern by 8
-			if (left(cell).isHit() && !right(cell).isHit()) {
+			} else if (!isRight(i, j) && !right(cell).isHit()) {
 				right(cell).add(11);
 			}
-		}
-
-		catch (Exception e) {
-			// do nothing
 		}
 	}
 
@@ -342,214 +294,128 @@ public class InfluenceMap implements Serializable, Observer {
 		return isLeft(i, j) || isRight(i, j) || isTop(i, j) || isBottom(i, j);
 	}
 
+	/**
+	 * Marks ship as sunk, and removes hotspots around the ship
+	 * 
+	 * @param i
+	 *            the row index
+	 * @param j
+	 *            the column index
+	 */
 	public void sunk(int i, int j) {
 		InfluenceCell cell = get(i, j);
 		if (cell.isHit()) {
-			if (!isEdge(i, j)) {
-				if (!above(cell).isHit() && above(cell).isOdd()) {
-					// if(map[i-1][j]==13)
-					above(cell).subtract(9);
-				}
+			if (!isLeft(i, j)) {
+				left(cell).sunk(4);
+			}
 
-				// dec above if even
-				if (!above(cell).isHit() && above(cell).isEven()) {
-					above(cell).subtract(2);
-				}
+			if (!isRight(i, j)) {
+				right(cell).sunk(4);
+			}
 
-				// dec below if odd
-				if (!below(cell).isHit() && below(cell).isOdd()) {
-					below(cell).subtract(9);
-				}
+			if (!isTop(i, j)) {
+				above(cell).sunk(2);
+			}
 
-				// dec below if even
-				if (!below(cell).isHit() && below(cell).isEven()) {
-					below(cell).subtract(2);
-				}
-
-				// dec left if even
-				if (!left(cell).isHit() && left(cell).isEven()) {
-					left(cell).subtract(4);
-				}
-
-				// dec left if odd
-				if (!left(cell).isHit() && left(cell).isOdd()) {
-					left(cell).subtract(9);
-				}
-
-				// dec right if even
-				if (!right(cell).isHit() && right(cell).isEven()) {
-					right(cell).subtract(4);
-				}
-
-				// dec right if odd
-				if (!right(cell).isHit() && right(cell).isOdd()) {
-					right(cell).subtract(9);
-				}
-			} else {
-				try {
-					// dec above if even
-					if (!above(cell).isHit() && above(cell).isEven()) {
-						above(cell).subtract(2);
-					}
-
-					if (!above(cell).isHit() && above(cell).isOdd()) {
-						// if(map[i-1][j]==13)
-						above(cell).subtract(9);
-					}
-				} catch (Exception ex) {
-					// do nothing
-				}
-
-				// dec below if odd
-				try {
-					// dec below if even
-					if (!below(cell).isHit() && below(cell).isEven()) {
-						below(cell).subtract(2);
-					}
-
-					if (!below(cell).isHit() && below(cell).isOdd()) {
-						below(cell).subtract(9);
-					}
-				} catch (Exception ex) {
-					// do nothing
-				}
-
-				try {
-					// dec left if even
-					if (!left(cell).isHit() && left(cell).isEven()) {
-						left(cell).subtract(4);
-					}
-
-					// dec left if odd
-					if (!left(cell).isHit() && left(cell).isOdd()) {
-						left(cell).subtract(9);
-					}
-				} catch (Exception ex) {
-					// do nothing
-				}
-
-				try {
-					// dec right if even
-					if (!right(cell).isHit() && right(cell).isEven()) {
-						get(i, j + 1).subtract(4);
-					}
-
-					// dec right if odd
-					if (!right(cell).isHit() && right(cell).isOdd()) {
-						right(cell).subtract(9);
-					}
-				} catch (Exception ex) {
-					// do nothing
-				}
+			if (!isBottom(i, j)) {
+				below(cell).sunk(2);
 			}
 		}
 	}
 
 	private void propagateMissRight(int i, int j) {
-		try {
-			InfluenceCell cell = left(get(i, j));
-			if (!cell.isHit()) {
+		if (isRight(i, j))
+			return;
+		InfluenceCell cell = right(get(i, j));
+		if (!cell.isHit())
+			return;
+		for (int p = 2; p <= 5; p++) {
+			if (isRight(cell.getI(), cell.getJ()) || right(cell).isMiss())
 				return;
-			}
-
-			for (int p = 2; p <= 5; p++) {
-				cell = right(cell);
-				if (!(cell.isHit() || cell.isMiss())) {
-					if (p > 3
-							|| (get(i - 1, j + 1).isMiss() && get(i + 1, j + 1)
-									.isMiss())) {
-						cell.add(9);
-						return;
-					}
-				}
-
-				if (!cell.isHit()) {
+			cell = right(cell);
+			if (!cell.isHit()) {
+				if (p > 3
+						|| (!isTop(cell.getI(), cell.getJ())
+								&& above(right(cell)).isMiss()
+								&& !isBottom(cell.getI(), cell.getJ()) && below(
+									right(cell)).isMiss())) {
+					cell.add(9);
 					return;
-				}
+				} else
+					return;
 			}
-		} catch (Exception ex) {
-			// do nothing
 		}
 	}
 
 	private void propagateMissLeft(int i, int j) {
-		try {
-			InfluenceCell cell = left(get(i, j));
-			if (!cell.isHit()) {
+		if (isLeft(i, j))
+			return;
+		InfluenceCell cell = left(get(i, j));
+		if (!cell.isHit())
+			return;
+		for (int p = 2; p <= 5; p++) {
+			if (isLeft(cell.getI(), cell.getJ()) || left(cell).isMiss())
 				return;
-			}
-
-			for (int p = 2; p <= 5; p++) {
-				cell = left(cell);
-				if (!(cell.isHit() || cell.isMiss())) {
-					if (p > 3
-							|| (get(i - 1, j - 1).isMiss() && get(i + 1, j - 1)
-									.isMiss())) {
-						cell.add(9);
-						return;
-					}
-				}
-
-				if (!cell.isHit()) {
+			cell = left(cell);
+			if (!cell.isHit()) {
+				if (p > 3
+						|| (!isTop(cell.getI(), cell.getJ())
+								&& above(left(cell)).isMiss()
+								&& !isBottom(cell.getI(), cell.getJ()) && below(
+									left(cell)).isMiss())) {
+					cell.add(9);
 					return;
-				}
+				} else
+					return;
 			}
-		} catch (Exception ex) {
-			// do nothing
 		}
 	}
 
 	private void propagateMissUp(int i, int j) {
-		try {
-			InfluenceCell cell = left(get(i, j));
-			if (!cell.isHit()) {
+		if (isTop(i, j))
+			return;
+		InfluenceCell cell = above(get(i, j));
+		if (!cell.isHit())
+			return;
+		for (int p = 2; p <= 5; p++) {
+			if (isTop(cell.getI(), cell.getJ()) || above(cell).isMiss())
 				return;
-			}
-
-			for (int p = 2; p <= 5; p++) {
-				cell = above(cell);
-				if (!(cell.isHit() || cell.isMiss())) {
-					if (p > 3
-							|| (get(i - 1, j - 1).isMiss() && get(i - 1, j + 1)
-									.isMiss())) {
-						cell.add(9);
-						return;
-					}
-				}
-
-				if (!cell.isHit()) {
+			cell = above(cell);
+			if (!cell.isHit()) {
+				if (p > 3
+						|| (!isLeft(cell.getI(), cell.getJ())
+								&& above(left(cell)).isMiss()
+								&& !isRight(cell.getI(), cell.getJ()) && above(
+									right(cell)).isMiss())) {
+					cell.add(9);
 					return;
-				}
+				} else
+					return;
 			}
-		} catch (Exception ex) {
-			// do nothing
 		}
 	}
 
 	private void propagateMissDown(int i, int j) {
-		try {
-			InfluenceCell cell = left(get(i, j));
-			if (!cell.isHit()) {
+		if (isBottom(i, j))
+			return;
+		InfluenceCell cell = below(get(i, j));
+		if (!cell.isHit())
+			return;
+		for (int p = 2; p <= 5; p++) {
+			if (isBottom(cell.getI(), cell.getJ()) || below(cell).isMiss())
 				return;
-			}
-
-			for (int p = 2; p <= 5; p++) {
-				cell = below(cell);
-				if (!(cell.isHit() || cell.isMiss())) {
-					if (p > 3
-							|| (get(i + 1, j - 1).isMiss() && get(i + 1, j + 1)
-									.isMiss())) {
-						cell.add(9);
-						return;
-					}
-				}
-
-				if (!cell.isHit()) {
+			cell = below(cell);
+			if (!cell.isHit()) {
+				if (p > 3
+						|| (!isLeft(cell.getI(), cell.getJ())
+								&& below(left(cell)).isMiss()
+								&& !isRight(cell.getI(), cell.getJ()) && below(
+									right(cell)).isMiss())) {
+					cell.add(9);
 					return;
-				}
+				} else
+					return;
 			}
-		} catch (Exception ex) {
-			// do nothing
 		}
 	}
 
@@ -558,14 +424,15 @@ public class InfluenceMap implements Serializable, Observer {
 	 */
 	public void miss(int i, int j) {
 		get(i, j).miss();
-
 		propagateMissLeft(i, j);
 		propagateMissRight(i, j);
 		propagateMissDown(i, j);
 		propagateMissUp(i, j);
-
 	}
 
+	/**
+	 * Search for deadends and sets their values
+	 */
 	public void searchDeadends() {
 		for (int a = 0; a < getHeight(); a++)
 			for (int b = 0; b < getWidth(); b++)
@@ -573,21 +440,40 @@ public class InfluenceMap implements Serializable, Observer {
 
 	}
 
+	/**
+	 * Sets deadends
+	 * 
+	 * @param i
+	 *            the row index
+	 * @param j
+	 *            the column index
+	 */
 	private void setDeadends(int i, int j) {
-		InfluenceCell cell = get(i, j);
-		
-		if(!cell.isMiss() && isEdge(i, j)) {
-			if (!isLeft(i, j) && !left(cell).equals(-9))
-				return;
-			if (!isRight(i, j) && !right(cell).equals(-9))
-				return;
-			if (!isTop(i, j) && !above(cell).equals(-9))
-				return;
-			if (!isBottom(i, j) && !below(cell).equals(-9))
-				return;
-			
-			cell.subtract(7);
+		if (isDeadend(i, j)) {
+			get(i, j).subtract(7);
 		}
+	}
+
+	/**
+	 * Answers whether the cell is deadend
+	 * 
+	 * @param i
+	 *            the row index
+	 * @param j
+	 *            the column index
+	 * @return <code>true</code> if cell is deadend, <code>false</code> in every
+	 *         other case
+	 */
+	private boolean isDeadend(int i, int j) {
+		InfluenceCell cell = get(i, j);
+		if (!cell.isMiss() && isEdge(i, j)
+				&& (isLeft(i, j) || left(cell).equals(-9))
+				&& (isRight(i, j) || right(cell).equals(-9))
+				&& (isTop(i, j) || above(cell).equals(-9))
+				&& (isBottom(i, j) || below(cell).equals(-9))) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -621,18 +507,17 @@ public class InfluenceMap implements Serializable, Observer {
 	/**
 	 * Adds two influence maps objects together by summing their elements
 	 * 
-	 * @param i
+	 * @param map
 	 *            another map
 	 */
-	public void addMap(InfluenceMap i) {
+	public void addMap(InfluenceMap map) {
 		for (int x = 0; x < getHeight(); x++) {
 			for (int y = 0; y < getWidth(); y++) {
-				if (get(x, y).compareTo(InfluenceCell.getHitvalue()) >= 0) {
-					get(x, y).add(5);
-				} else if (i.get(x, y).compareTo(InfluenceCell.getHitvalue()) >= 0) {
+				if (get(x, y).compareTo(InfluenceCell.getHitvalue()) >= 0
+						|| map.get(x, y).compareTo(InfluenceCell.getHitvalue()) >= 0) {
 					get(x, y).add(5);
 				} else {
-					get(x, y).add(i.getValue(x, y));
+					get(x, y).add(map.getValue(x, y));
 				}
 			}
 		}
@@ -655,16 +540,17 @@ public class InfluenceMap implements Serializable, Observer {
 	 * @return the string representation
 	 */
 	public String toString() {
-		String r = "";
-		for (int i = 0; i < 10; i++) // change these to ROWS to use the default
+		String result = "";
+		for (int i = 0; i < getHeight(); i++) // change these to ROWS to use the
+												// default
 		{
-			r = r + "|";
-			for (int j = 0; j < 10; j++) {
-				r = r + get(i, j).getValue();
+			result = result + "|";
+			for (int j = 0; j < getWidth(); j++) {
+				result = result + get(i, j).getValue();
 			}
-			r = r + "|\n";
+			result = result + "|\n";
 		}
-		return r;
+		return result;
 	}
 
 	/**

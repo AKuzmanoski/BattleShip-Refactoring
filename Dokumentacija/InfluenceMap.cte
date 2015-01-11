@@ -62,7 +62,7 @@
             <Marks true="c23 c35 c62 c74 c95 c125 c140 c152 c107 "/>
         </TestCase>
         <TestCase id="c180" name="Testcase 3">
-            <Marks true="c146 c152 c122 c113 c80 c71 c62 c38 c20 "/>
+            <Marks true="c146 c152 c122 c113 c80 c71 c38 c20 c62 "/>
         </TestCase>
     </TestGroup>
 </CteObject>
