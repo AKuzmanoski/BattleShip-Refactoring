@@ -27,12 +27,8 @@ class GUI extends JFrame
 		setHoriz(true);
 		data.showMap= true;
 		
+		resetPaintSunk();
 		
-		data.paintMineSunk= false;
-		data.paintDestSunk= false;
-		data.paintSubSunk= false;
-		data.paintBattleSunk= false;
-		data.paintAirSunk= false;
 	
 		data.gameState = paramGameState;
 		
@@ -212,6 +208,13 @@ class GUI extends JFrame
 			 data.agentDestSunk= false;
 			 data.agentSubSunk= false;		
 			 data.playerMineSunk= false;
+		}
+		private void resetPaintSunk(){
+			data.paintMineSunk= false;
+			data.paintDestSunk= false;
+			data.paintSubSunk= false;
+			data.paintBattleSunk= false;
+			data.paintAirSunk= false;
 		}
 	
 	public void setOut(String s)
