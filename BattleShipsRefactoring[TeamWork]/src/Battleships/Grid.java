@@ -162,7 +162,9 @@ public class Grid implements Serializable
 		
 		try
 		{
+			if(!checkMinePlaced()){
 			ships.put("Minesweeper", new Minesweeper(this, i, j, isHorizontal));
+			}
 		}
 		
 		catch (PositionOccupiedException Exception)
@@ -208,7 +210,9 @@ public boolean addAir(int i, int j, int s)
 	
 	try
 	{
+		if(!checkAirPlaced()){
 	      ships.put("AircraftCarrier", new AircraftCarrier(this, i, j, isHorizontal));
+		}
 	}
 	
 	catch (PositionOccupiedException Exception)
@@ -238,8 +242,9 @@ public boolean addAir(int i, int j, int s)
 		boolean isHorizontal = (s == 0);
 		
 		try{
-		
+		    if(!checkSubPlaced()){
 			ships.put("Submarine", new Submarine(this, i, j, isHorizontal));
+		    }
 			
 		}
 		
@@ -287,7 +292,9 @@ public boolean addAir(int i, int j, int s)
 		
 		try
 		{
+			if(!checkDestPlaced()){
 			 ships.put("Destroyer", new Destroyer(this, i, j, isHorizontal));
+			}
 		}
 		
 		catch (PositionOccupiedException Exception)
@@ -331,7 +338,9 @@ public boolean addAir(int i, int j, int s)
 		
 		try
 		{
+			if(!checkBattlePlaced()){
 			ships.put("Battleship", new Battleship(this, i, j, isHorizontal));
+			}
 		}
 		
 		catch (PositionOccupiedException Exception)
@@ -371,11 +380,10 @@ public boolean addAir(int i, int j, int s)
 	{
 		
 		if((checkMinePlaced()&& checkSubPlaced()&& checkDestPlaced()&& checkBattlePlaced()&& checkAirPlaced() ))
-		{return true;}
-		else{
-            System.out.println("not ok");
-			return false;
-		}
+		return true;
+		else    
+		return false;
+		
 	}	
 	
 	
