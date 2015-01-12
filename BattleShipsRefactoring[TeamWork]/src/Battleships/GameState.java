@@ -15,27 +15,26 @@ public class GameState {
 	private static final int HeightOfGrid = 10;
 	private boolean gameOver;
 	private boolean playerAircraftCarrierSunk;
-	public Grid playerHomeGrid;
+	private Grid playerHomeGrid;
 	private boolean playerBattleSunk;
 	private boolean allAgentShipsSunk;
 	private boolean allPlayerShipsSunk;
-	boolean playerSubSunk;
-	boolean playerDestSunk;
+	private boolean playerSubSunk;
+	private boolean playerDestSunk;
 	private boolean agentBattleSunk;
 	private boolean agentAirSunk;
 	private Grid compHomeGrid;
-	public Grid compAtt;
-	public Grid playerAtt;
-	public InfluenceMap influenceMap;
+	private Grid compAtt;
+	private Grid playerAtt;
+	private InfluenceMap influenceMap;
 	private boolean playerMineSunk;
 	private boolean agentDestSunk;
 	private boolean agentSubSunk;
 	private boolean agentMineSunk;
 	private boolean playerWins;
 	private boolean isGameOver;
-
-	public boolean playerTurn;
-	public boolean agentTurn;
+	private boolean playerTurn;
+	private boolean agentTurn;
 	private boolean playerShipsdeployed;
 	private boolean agentShipsDeployed;
 	private boolean isDeployedComplete;
@@ -59,7 +58,51 @@ public class GameState {
 		playerShipsdeployed = false;
 
 	}
+	public void setPlayerTurn(boolean playerTurn) {
+		this.playerTurn = playerTurn;
+	}
+	public void setAgentTurn(boolean agentTurn) {
+		this.agentTurn = agentTurn;
+	}
+	public Grid getPlayerHomeGrid() {
+		return playerHomeGrid;
+	}
 
+	public void setPlayerHomeGrid(Grid playerHomeGrid) {
+		this.playerHomeGrid = playerHomeGrid;
+	}
+
+	public Grid getPlayerAtt() {
+		return playerAtt;
+	}
+
+	public void setPlayerAtt(Grid playerAtt) {
+		this.playerAtt = playerAtt;
+	}
+
+	public Grid getCompHomeGrid() {
+		return compHomeGrid;
+	}
+
+	public Grid getCompAtt() {
+		return compAtt;
+	}
+
+	public void setCompAtt(Grid compAtt) {
+		this.compAtt = compAtt;
+	}
+
+	public void setCompHomeGrid(Grid compHomeGrid) {
+		this.compHomeGrid = compHomeGrid;
+	}
+
+	public InfluenceMap getInfluenceMap() {
+		return influenceMap;
+	}
+
+	public void setInfluenceMap(InfluenceMap influenceMap) {
+		this.influenceMap = influenceMap;
+	}
 	public void outputHitList(JTextComponent displayTextbox)
 	{
 		

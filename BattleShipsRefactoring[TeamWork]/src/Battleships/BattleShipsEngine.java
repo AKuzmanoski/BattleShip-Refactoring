@@ -56,7 +56,7 @@ public class BattleShipsEngine {
 		System.out.println("Deployed " + gui.data.gameState.isBothPlayerAndAgentShipsDeployed());
 			
 	
-		while(!gui.data.gameState.playerHomeGrid.allShipsPlaced())
+		while(!gui.data.gameState.getPlayerHomeGrid().allShipsPlaced())
 		{
 				//PlayerDeploymentPhase, wait for player to place all their ships
 		}
@@ -84,8 +84,8 @@ public class BattleShipsEngine {
 			}
 			gui.repaint();
 		
-			smith.setAttackGrid( gui.data.gameState.compAtt);
-			smith.setMap(gui.data.gameState.influenceMap);
+			smith.setAttackGrid( gui.data.gameState.getCompAtt());
+			smith.setMap(gui.data.gameState.getInfluenceMap());
 			while(gui.data.gameState.isAgentTurn() && !gui.data.gameState.IsGameOver())
 			{
 			
@@ -93,7 +93,7 @@ public class BattleShipsEngine {
 				smith.nextShot();
 				gui.agentShot(smith.getI(),smith.getJ());
 				System.out.println("shot at " + smith.getI() + " " +smith.getJ());
-				System.out.println(gui.data.gameState.compAtt.toString());
+				System.out.println(gui.data.gameState.getCompAtt().toString());
 				//if(gameState.playerHome.get(i,j
 				
 				
@@ -145,7 +145,7 @@ public class BattleShipsEngine {
 
 
 	private static void determineIfShotSunkAShip(GUI gui, Agent smith) {
-		System.out.println("Player Home board \n" +gui.data.gameState.playerHomeGrid.toString());
+		System.out.println("Player Home board \n" +gui.data.gameState.getPlayerHomeGrid().toString());
 		if(gui.checkMineSunk()&& !gui.getPaintMineSunk())
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default

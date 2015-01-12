@@ -188,7 +188,7 @@ public class GUI extends JFrame
 		{
 			for (int j = 0; j < 10; j++)//change this to CoLumns for default
 			{
-				if (data.gameState.playerAtt.getGridValue(i,j) == 1)
+				if (data.gameState.getPlayerAtt().getGridValue(i,j) == 1)
 					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
 				else
 				if (data.gameState.isCompHomeGridLessThanMinus1(i,j))
@@ -262,7 +262,7 @@ public class GUI extends JFrame
 
 	}
 	public boolean checkAirPlaced(){
-		return this.data.gameState.playerHomeGrid.checkAirPlaced();
+		return this.data.gameState.getPlayerHomeGrid().checkAirPlaced();
 	}
 	
 	public String placeAir(int i, int j)
@@ -273,9 +273,9 @@ public class GUI extends JFrame
 			boolean valid;
 			if(isShipRotatedHorizonally())
 			{			
-				valid = data.gameState.playerHomeGrid.addAir(i,j,0);
+				valid = data.gameState.getPlayerHomeGrid().addAir(i,j,0);
 			}else{
-				valid = data.gameState.playerHomeGrid.addAir(i,j,1); 
+				valid = data.gameState.getPlayerHomeGrid().addAir(i,j,1); 
 			}
 			
 			if(valid){
@@ -286,15 +286,15 @@ public class GUI extends JFrame
 					AircraftCarrier.paint(hp,(j*20),(i*20));
 				}
 				
-				out = out + data.gameState.playerHomeGrid.toString();
-				data.gameState.playerHomeGrid.setAirPlaced();
+				out = out + data.gameState.getPlayerHomeGrid().toString();
+				data.gameState.getPlayerHomeGrid().setAirPlaced();
 				getOutText().setText("Air Placed");
 			}
 			else{
 				if(isShipRotatedHorizonally()){
 				getOutText().setText("Aircraft Carrier Will Not Fit Here");
 				}
-				out ="not valid" + data.gameState.playerHomeGrid.toString();//isto
+				out ="not valid" + data.gameState.getPlayerHomeGrid().toString();//isto
 			}
 		}
 		return out;
@@ -311,10 +311,10 @@ public class GUI extends JFrame
 			boolean valid;
 			if(isShipRotatedHorizonally())
 			{
-					valid = data.gameState.playerHomeGrid.addBattle(i,j,0);
+					valid = data.gameState.getPlayerHomeGrid().addBattle(i,j,0);
 			}
 			else{
-				    valid = data.gameState.playerHomeGrid.addBattle(i,j,1);
+				    valid = data.gameState.getPlayerHomeGrid().addBattle(i,j,1);
 			}
 			
 			if(valid){
@@ -324,13 +324,13 @@ public class GUI extends JFrame
 				}else{
 					Battleship.paint(hp,(j*20),(i*20));
 				}
-				out = out + data.gameState.playerHomeGrid.toString();
+				out = out + data.gameState.getPlayerHomeGrid().toString();
 				data.battlePlaced = true;
 				if(!isShipRotatedHorizonally()){
 					getOutText().setText("Battleship Placed");
 				}
 			}else{
-				out ="not valid"+ data.gameState.playerHomeGrid.toString();
+				out ="not valid"+ data.gameState.getPlayerHomeGrid().toString();
 				getOutText().setText("Battleships Will Not Fit Here");
 			}
 				
@@ -351,9 +351,9 @@ public class GUI extends JFrame
 			if(isShipRotatedHorizonally())
 			{
 	
-				valid = data.gameState.playerHomeGrid.addDest(i,j,0);
+				valid = data.gameState.getPlayerHomeGrid().addDest(i,j,0);
 			}else{
-				valid = data.gameState.playerHomeGrid.addDest(i,j,1);
+				valid = data.gameState.getPlayerHomeGrid().addDest(i,j,1);
 			}
 			Graphics hp = data.homePanel.getGraphics();
 			
@@ -363,11 +363,11 @@ public class GUI extends JFrame
 				}else{
 					Destroyer.paint(hp,(j*20),(i*20));
 				}
-				out = out + data.gameState.playerHomeGrid.toString();
+				out = out + data.gameState.getPlayerHomeGrid().toString();
 				data.destPlaced = true;
 				getOutText().setText("Destroyer Placed");
 			}else{
-				out ="not valid" + data.gameState.playerHomeGrid.toString();
+				out ="not valid" + data.gameState.getPlayerHomeGrid().toString();
 				if(isShipRotatedHorizonally()){
 					getOutText().setText("Destroyer Will Not Fit Here");
 				}
@@ -378,7 +378,7 @@ public class GUI extends JFrame
 	}
 	
 	public boolean submarineCanBePlaced(){
-		return (checkAirPlaced() && data.gameState.playerHomeGrid.checkBattlePlaced() && data.gameState.playerHomeGrid.checkDestPlaced() && !data.gameState.playerHomeGrid.checkSubPlaced());
+		return (checkAirPlaced() && data.gameState.getPlayerHomeGrid().checkBattlePlaced() && data.gameState.getPlayerHomeGrid().checkDestPlaced() && !data.gameState.getPlayerHomeGrid().checkSubPlaced());
 	}
 	public String placeSub(int i, int j)
 	{
@@ -388,10 +388,10 @@ public class GUI extends JFrame
 			boolean valid;
 			if(isShipRotatedHorizonally())
 			{	
-				valid = data.gameState.playerHomeGrid.addSub(i,j,0);
+				valid = data.gameState.getPlayerHomeGrid().addSub(i,j,0);
 			}
 			else{
-				valid = data.gameState.playerHomeGrid.addSub(i,j,1);
+				valid = data.gameState.getPlayerHomeGrid().addSub(i,j,1);
 			}
 			
 			Graphics hp = data.homePanel.getGraphics();
@@ -403,14 +403,14 @@ public class GUI extends JFrame
 					}else{
 						Submarine.paint(hp,(j*20),(i*20));
 					}
-					out = out + data.gameState.playerHomeGrid.toString();
+					out = out + data.gameState.getPlayerHomeGrid().toString();
 					data.subPlaced = true;
 					getOutText().setText("Submarine Placed");
 			}
 			else
 			  {
 					out ="not valid";
-					out = out + data.gameState.playerHomeGrid.toString();
+					out = out + data.gameState.getPlayerHomeGrid().toString();
 					getOutText().setText("Submarine Will Not Fit Here");
 			  }	
 			}
@@ -432,9 +432,9 @@ public class GUI extends JFrame
 			boolean valid;
 			if(isShipRotatedHorizonally())
 			{
-				valid = data.gameState.playerHomeGrid.addMine(i,j,0);
+				valid = data.gameState.getPlayerHomeGrid().addMine(i,j,0);
 			}else{
-				valid = data.gameState.playerHomeGrid.addMine(i,j,1);
+				valid = data.gameState.getPlayerHomeGrid().addMine(i,j,1);
 			}
 			Graphics hp = data.homePanel.getGraphics();
 		
@@ -445,13 +445,13 @@ public class GUI extends JFrame
 		    	}else{
 		    		Minesweeper.paint(hp,(j*20),(i*20));
 		    	}
-				out = out + data.gameState.playerHomeGrid.toString();
+				out = out + data.gameState.getPlayerHomeGrid().toString();
 				data.minePlaced = true;
 				getOutText().setText("Minesweeper Placed");
 			}
 			else
 			{
-				out ="not valid"+ data.gameState.playerHomeGrid.toString();
+				out ="not valid"+ data.gameState.getPlayerHomeGrid().toString();
 				getOutText().setText("Minesweeper Will Not Fit Here");
 			}	
 			
@@ -503,7 +503,7 @@ public class GUI extends JFrame
 	
     public String deploy(int i, int j)
 	{
-		return this.placeAir(i,j) + "\n" +this.placeBattle(i,j) + "\n" +this.placeDest(i,j) + "\n" +this.placeSub(i,j)+"\n" +this.placeMine(i,j)+ data.gameState.playerTurn;	
+		return this.placeAir(i,j) + "\n" +this.placeBattle(i,j) + "\n" +this.placeDest(i,j) + "\n" +this.placeSub(i,j)+"\n" +this.placeMine(i,j)+ data.gameState.isPlayerTurn();	
 
 	}
 
@@ -542,7 +542,7 @@ public class GUI extends JFrame
 		{
 			for (int j = 0; j < 10; j++)//change this to CoLumns for default
 			{
-				int col = data.gameState.influenceMap.getValue(i,j);
+				int col = data.gameState.getInfluenceMap().getValue(i,j);
 				
 				if(data.showMap)
 				{
@@ -582,7 +582,7 @@ public class GUI extends JFrame
 	
 	
     private boolean validForShooting(){
-    	return (data.gameState.agentTurn && data.gameState.isBothPlayerAndAgentShipsDeployed());
+    	return (data.gameState.isAgentTurn() && data.gameState.isBothPlayerAndAgentShipsDeployed());
     }
 	private boolean takenShot(int sqrVal){
 		return (sqrVal < 0 || sqrVal==1);
@@ -592,7 +592,7 @@ public class GUI extends JFrame
 	{
 		if(validForShooting())
 		{
-		int sqrVal = data.gameState.playerHomeGrid.getGridValue(X,Y);
+		int sqrVal = data.gameState.getPlayerHomeGrid().getGridValue(X,Y);
 						
 						if(takenShot(sqrVal))
 						{
@@ -601,9 +601,9 @@ public class GUI extends JFrame
 							
 						if(sqrVal == 0)
 						{
-							System.out.println(data.gameState.playerHomeGrid.shot(X,Y));
-							data.gameState.compAtt.update(X,Y,1);
-							data.gameState.influenceMap.miss(X,Y);
+							System.out.println(data.gameState.getPlayerHomeGrid().shot(X,Y));
+							data.gameState.getCompAtt().update(X,Y,1);
+							data.gameState.getInfluenceMap().miss(X,Y);
 							this.paintMap();
 							Graphics hp = data.homePanel.getGraphics();	
 							MissIcon.paint(hp,(Y*20),(X*20));
@@ -614,9 +614,9 @@ public class GUI extends JFrame
 						
 						if(sqrVal > 1)
 						{
-							System.out.println(data.gameState.playerHomeGrid.shot(X,Y));
-							data.gameState.compAtt.update(X,Y,8);
-							data.gameState.influenceMap.hit(X,Y);
+							System.out.println(data.gameState.getPlayerHomeGrid().shot(X,Y));
+							data.gameState.getCompAtt().update(X,Y,8);
+							data.gameState.getInfluenceMap().hit(X,Y);
 							Graphics hp = data.homePanel.getGraphics();	
 							HitIcon.paint(hp,(Y*20),(X*20));
 							getOutText().setText("Agent Has Hit One Of your ships! Agent's Turn again");
@@ -625,12 +625,12 @@ public class GUI extends JFrame
 						}
 						
 						System.out.println("compAtt");						
-						System.out.println(data.gameState.compAtt.toString());
+						System.out.println(data.gameState.getCompAtt().toString());
 						
 						
 		}		
 		
-		System.out.println("Map is \n" + data.gameState.influenceMap.toString());
+		System.out.println("Map is \n" + data.gameState.getInfluenceMap().toString());
 		
 		
 	}
@@ -651,22 +651,22 @@ public class GUI extends JFrame
 		return data.outText;
 	}	
 	public boolean checkMineSunk(){
-		return data.gameState.playerHomeGrid.checkMineSunk();
+		return data.gameState.getPlayerHomeGrid().checkMineSunk();
 	}
 	public boolean checkAirSunk(){
-		return data.gameState.playerHomeGrid.checkAirSunk();
+		return data.gameState.getPlayerHomeGrid().checkAirSunk();
 	}
 	public boolean checkSubSunk(){
-		return data.gameState.playerHomeGrid.checkSubSunk();
+		return data.gameState.getPlayerHomeGrid().checkSubSunk();
 	}
 	public boolean checkDestSunk(){
-		return data.gameState.playerHomeGrid.checkDestSunk();
+		return data.gameState.getPlayerHomeGrid().checkDestSunk();
 	}
 	public boolean checkBattleSunk(){
-		return data.gameState.playerHomeGrid.checkBattleSunk();
+		return data.gameState.getPlayerHomeGrid().checkBattleSunk();
 	}
 	public int getGridValue(int i,int j){
-		return data.gameState.playerHomeGrid.getGridValue(i,j);
+		return data.gameState.getPlayerHomeGrid().getGridValue(i,j);
 	}
 }
 	
