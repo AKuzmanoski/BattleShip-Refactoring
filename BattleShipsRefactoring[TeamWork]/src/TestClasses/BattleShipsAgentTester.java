@@ -54,7 +54,7 @@ public class BattleShipsAgentTester {
 
 		agent.nextShot();
 
-		if (attackGrid.getGridVal(i, j) == 0) {
+		if (attackGrid.getGridValue(i, j) == 0) {
 			Assert.assertEquals(
 					"|0000000000|\n|0000000000|\n|0000000000|\n|000-3220000|\n|00-599913000|\n|000-3220000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n",
 					agent.getMap().toString());
@@ -69,7 +69,7 @@ public class BattleShipsAgentTester {
 					agent.getMap().toString());
 		}
 
-		if (attackGrid.getGridVal(i, j) != 0) {
+		if (attackGrid.getGridValue(i, j) != 0) {
 			Assert.assertEquals(
 					"|0000000000|\n|0000000000|\n|0000000000|\n|000-3220000|\n|00-59990000|\n|000-3220000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n",
 					agent.getMap().toString());
@@ -98,7 +98,7 @@ public class BattleShipsAgentTester {
 
 		agent.nextShot();
 
-		if (attackGrid.getGridVal(i, j) == 0) {
+		if (attackGrid.getGridValue(i, j) == 0) {
 			Assert.assertEquals(
 					"|0000000000|\n|0000000000|\n|0000000000|\n|0002002000|\n|0049449400|\n|0002002000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n",
 					agent.getMap().toString());
@@ -110,7 +110,7 @@ public class BattleShipsAgentTester {
 					agent.getMap().toString());
 		}
 
-		if (attackGrid.getGridVal(i, j) != 0) {
+		if (attackGrid.getGridValue(i, j) != 0) {
 			Assert.assertEquals(
 					"|0000000000|\n|0000000000|\n|0000000000|\n|0002002000|\n|0049449400|\n|0002002000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n",
 					agent.getMap().toString());

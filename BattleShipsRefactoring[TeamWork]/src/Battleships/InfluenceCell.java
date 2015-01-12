@@ -5,9 +5,6 @@ import java.util.Observable;
 /**
  * Once cell in the influence map
  * 
- * @author AKuzmanoski
- * @version v1.0 01/07/2015
- * @since 01/07/2015
  */
 public class InfluenceCell extends Observable {
 	private static final int hitValue = 9;

@@ -8,6 +8,11 @@ import Battleships.Graphics.InfluencePanel;
 
 
 public class BattleShipsEngine {
+	private static final int mineSunk = -6;
+	private static final int destSunk = -1;
+	private static final int subSunk = -5;
+	private static final int battleSunk = -4;
+	private static final int airSunk = -3;
 	public AttackPanel attackPanel;
 	public HomePanel homePanel;
 	public InfluencePanel influenceMapPanel;
@@ -141,13 +146,13 @@ public class BattleShipsEngine {
 
 	private static void determineIfShotSunkAShip(GUI gui, Agent smith) {
 		System.out.println("Player Home board \n" +gui.data.gameState.playerHomeGrid.toString());
-		if(gui.data.gameState.playerHomeGrid.checkMineSunk()&& !gui.getPaintMineSunk())
+		if(gui.checkMineSunk()&& !gui.getPaintMineSunk())
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(gui.data.gameState.playerHomeGrid.getGridVal(i,j) ==-6)
+						if(gui.getGridValue(i,j) ==mineSunk)
 						{
 							smith.setSunk(i,j);
 							gui.setPaintMineSunk();
@@ -156,13 +161,13 @@ public class BattleShipsEngine {
 				}
 		}
 		
-		if(gui.data.gameState.playerHomeGrid.checkDestSunk() && !gui.getPaintDestSunk())
+		if(gui.checkDestSunk() && !gui.getPaintDestSunk())
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(gui.data.gameState.playerHomeGrid.getGridVal(i,j) ==-1)
+						if(gui.getGridValue(i,j) ==destSunk)
 						{
 							smith.setSunk(i,j);
 							gui.setPaintDestSunk();
@@ -171,13 +176,13 @@ public class BattleShipsEngine {
 				}
 		}
 		
-		if(gui.data.gameState.playerHomeGrid.checkSubSunk() && !gui.getPaintSubSunk())
+		if(gui.checkSubSunk() && !gui.getPaintSubSunk())
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(gui.data.gameState.playerHomeGrid.getGridVal(i,j) ==-5)
+						if(gui.getGridValue(i,j) ==subSunk)
 						{
 							smith.setSunk(i,j);
 							gui.setPaintSubSunk();
@@ -186,13 +191,13 @@ public class BattleShipsEngine {
 				}
 		}
 		
-		if(gui.data.gameState.playerHomeGrid.checkBattleSunk() && !gui.getPaintBattleSunk())
+		if(gui.checkBattleSunk() && !gui.getPaintBattleSunk())
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(gui.data.gameState.playerHomeGrid.getGridVal(i,j) ==-4)
+						if(gui.getGridValue(i,j) ==battleSunk)
 						{
 							smith.setSunk(i,j);
 							gui.setPaintBattleSunk();
@@ -201,13 +206,13 @@ public class BattleShipsEngine {
 				}
 		}
 		
-		if(gui.data.gameState.playerHomeGrid.checkAirSunk() && !gui.getPaintAirSunk())
+		if(gui.checkAirSunk() && !gui.getPaintAirSunk())
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(gui.data.gameState.playerHomeGrid.getGridVal(i,j) ==-3)
+						if(gui.getGridValue(i,j) ==airSunk)
 						{
 							smith.setSunk(i,j);
 							gui.setPaintAirSunk();

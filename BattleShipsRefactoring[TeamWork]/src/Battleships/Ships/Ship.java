@@ -53,7 +53,7 @@ public abstract class Ship implements Serializable
 			throw new PositionExceedsBoardException();
 
 		for (int r = i; r < i + segments; r++)
-			while (board.getGridVal(r, j) != 0) {
+			while (board.getGridValue(r, j) != 0) {
 				throw new PositionOccupiedException();
 			}
 
@@ -70,7 +70,7 @@ public abstract class Ship implements Serializable
 			throw new PositionExceedsBoardException();
 
 		for (int c = j; c < j + segments; c++)
-			while (board.getGridVal(i, c) != 0) {
+			while (board.getGridValue(i, c) != 0) {
 				throw new PositionOccupiedException();
 			}
 

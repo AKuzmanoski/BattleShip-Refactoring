@@ -35,7 +35,7 @@ public class BattleshipsGridTester {
 		Assert.assertEquals(true, grid.isValidPlaceForAShip(5, 6));
 		
 		// Set air placed
-		grid.setAirPlaced(true);
+		grid.setAirPlaced();
 		
 		
 		// Test correctness with print methods

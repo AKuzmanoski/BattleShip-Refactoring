@@ -94,7 +94,7 @@ public class Agent {
 			}
 		}
 		if (map.getNumberOfHotspots() > 1) {
-			if (attackGrid.getGridVal(map.getIntHotspots()[0],
+			if (attackGrid.getGridValue(map.getIntHotspots()[0],
 					map.getIntHotspots()[1]) == 0) {
 				i = map.getIntHotspots()[0];
 				j = map.getIntHotspots()[1];

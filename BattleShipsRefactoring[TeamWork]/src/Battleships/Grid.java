@@ -91,7 +91,7 @@ public class Grid implements Serializable
 	}
 	public boolean isValidPlaceForAShip(int i, int j)
 	{	
-		return  (validPlace(this.getGridVal(i,j))) ;
+		return  (validPlace(this.getGridValue(i,j))) ;
 		
 	}
 	
@@ -361,19 +361,15 @@ public boolean addAir(int i, int j, int s)
 	*/
 		public boolean checkAirPlaced()
 	{
-		if (isAirPlaced() == true)
-			return true;
-		
-		else return false;
+			if(!ships.containsKey("AircraftCarrier"))return false;
+			return ships.get("AircraftCarrier").checkIsShipPlaced();
 	}
+	
 	/**
 		Sets airPlaced flag to true
 	*/
 	
-	public void setAirPlacedTrue()
-	{
-		setAirPlaced(true);
-	}
+	
 	
 	/**Checks if all ships have been placed*/
 	public boolean allShipsPlaced()
@@ -440,7 +436,7 @@ public boolean addAir(int i, int j, int s)
 		@param i the row index
 		@param j the column index
 	*/
-	public int getGridVal(int i, int j)
+	public int getGridValue(int i, int j)
 	{
 		if(positionNegative(i, j))
 			throw new IllegalArgumentException("Number cannot be negative");
@@ -454,7 +450,7 @@ public boolean addAir(int i, int j, int s)
 	*/
 	public boolean shot(int i, int j)
 	{
-		int sqr = this.getGridVal(i,j);
+		int sqr = this.getGridValue(i,j);
 		
 		//String output nikade ne se koristi pa ja izbrisav
 			
@@ -500,13 +496,10 @@ public boolean addAir(int i, int j, int s)
 	}
 	
 
-	public void setAirPlaced(boolean airPlaced) {
+	public void setAirPlaced() {
 		ships.get("AircraftCarrier").setShipAsPlaced();
 	}
-	public boolean isAirPlaced() {
-		if(!ships.containsKey("AircraftCarrier"))return false;
-		return ships.get("AircraftCarrier").checkIsShipPlaced();
-	}
+	
 	public boolean checkIsShipPlaced(Ship ship) {
 		return ship.checkIsShipPlaced();	
 	}
@@ -522,6 +515,6 @@ public boolean addAir(int i, int j, int s)
 	 * @return <code>true</code> if cell is empty, <code>false</code> in every other case
 	 */
 	public boolean isEmpty(int i, int j) {
-		return getGridVal(i, j) == 0;
+		return getGridValue(i, j) == 0;
 	}
 }

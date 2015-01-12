@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
+import javax.xml.crypto.Data;
 
 import Battleships.Graphics.HitIcon;
 import Battleships.Graphics.MissIcon;
@@ -93,6 +94,7 @@ public class GameState {
 		gameOver = false;
 
 	}
+	
 
 	public void SetGameOver() {
 		gameOver = true;
@@ -159,16 +161,14 @@ public class GameState {
 	
 	public String acceptPlayerShot(int i, int j, Graphics attackPanelGraphics, JTextField outText)
 	{
-		int sqr = playerAtt.getGridVal(i,j);
+		int sqr = playerAtt.getGridValue(i,j);
 		String out ="";
 
 			if (sqr ==0)
 			{
 				boolean hit = false;
 				hit = compHomeGrid.shot(i,j);
-		
 				
-		
 				if(hit)
 				{
 					HitIcon.paint(attackPanelGraphics,(j*20),(i*20));
@@ -176,7 +176,6 @@ public class GameState {
 					outText.setText("HIT! Have Another Turn!");
 				}
 				else
-				if(!hit)
 				{
 					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
 					compHomeGrid.update(i,j,1);
@@ -187,8 +186,6 @@ public class GameState {
 				}
 			}
 	
-		
-		
 		setShipSunkStates();
 		
 		out = out + "CompHome " +compHomeGrid.toString();
@@ -225,15 +222,15 @@ public class GameState {
 	}
 
 	public boolean isCompHomegridRefIsminus3(int i, int j) {
-		return compHomeGrid.getGridVal(i,j) ==-3;
+		return compHomeGrid.getGridValue(i,j) ==-3;
 	}
 
 	public boolean isCompHomeGridRefMinus4(int i, int j) {
-		return compHomeGrid.getGridVal(i,j) ==-4;
+		return compHomeGrid.getGridValue(i,j) ==-4;
 	}
 
 	public boolean isCompHomeGridLessThanMinus1(int i,int j) {
-		return compHomeGrid.getGridVal(i,j) < -1;
+		return compHomeGrid.getGridValue(i,j) < -1;
 	}
 
 	public void setAgentAirSunk(boolean agentAirSunk) {

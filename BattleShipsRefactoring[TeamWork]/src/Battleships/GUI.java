@@ -188,7 +188,7 @@ public class GUI extends JFrame
 		{
 			for (int j = 0; j < 10; j++)//change this to CoLumns for default
 			{
-				if (data.gameState.playerAtt.getGridVal(i,j) == 1)
+				if (data.gameState.playerAtt.getGridValue(i,j) == 1)
 					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
 				else
 				if (data.gameState.isCompHomeGridLessThanMinus1(i,j))
@@ -261,11 +261,14 @@ public class GUI extends JFrame
 		this.setVisible(true);	
 
 	}
-		
+	public boolean checkAirPlaced(){
+		return this.data.gameState.playerHomeGrid.checkAirPlaced();
+	}
+	
 	public String placeAir(int i, int j)
 	{
 		String out ="";
-		if(!this.data.gameState.playerHomeGrid.checkAirPlaced())
+		if(!checkAirPlaced())
 		{
 			boolean valid;
 			if(isShipRotatedHorizonally())
@@ -284,7 +287,7 @@ public class GUI extends JFrame
 				}
 				
 				out = out + data.gameState.playerHomeGrid.toString();
-				data.gameState.playerHomeGrid.setAirPlacedTrue();
+				data.gameState.playerHomeGrid.setAirPlaced();
 				getOutText().setText("Air Placed");
 			}
 			else{
@@ -298,7 +301,7 @@ public class GUI extends JFrame
 	}
 	
 	private boolean battleshipCanBePlaced(){
-		return (data.gameState.playerHomeGrid.isAirPlaced() && !data.battlePlaced);
+		return (checkAirPlaced() && !data.battlePlaced);
 	}
 	public String placeBattle(int i, int j)
 	{
@@ -337,7 +340,7 @@ public class GUI extends JFrame
 	}	
 	
     private boolean destroyerCanBePlaced(){
-    	return (data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && !data.destPlaced);
+    	return (checkAirPlaced() && data.battlePlaced && !data.destPlaced);
     }
 	public String placeDest(int i, int j)
 	{
@@ -375,7 +378,7 @@ public class GUI extends JFrame
 	}
 	
 	public boolean submarineCanBePlaced(){
-		return (data.gameState.playerHomeGrid.isAirPlaced() && data.gameState.playerHomeGrid.checkBattlePlaced() && data.gameState.playerHomeGrid.checkDestPlaced() && !data.gameState.playerHomeGrid.checkSubPlaced());
+		return (checkAirPlaced() && data.gameState.playerHomeGrid.checkBattlePlaced() && data.gameState.playerHomeGrid.checkDestPlaced() && !data.gameState.playerHomeGrid.checkSubPlaced());
 	}
 	public String placeSub(int i, int j)
 	{
@@ -419,7 +422,7 @@ public class GUI extends JFrame
 	
 	
 	private boolean minesweeperCanBePlaced(){
-		return (data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && data.destPlaced && data.subPlaced && !data.minePlaced);
+		return (checkAirPlaced() && data.battlePlaced && data.destPlaced && data.subPlaced && !data.minePlaced);
 	}
 	public String placeMine(int i, int j)
 	{
@@ -453,13 +456,15 @@ public class GUI extends JFrame
 			}	
 			
 		
-		if(data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && data.destPlaced && data.subPlaced && data.minePlaced)
+		if(allShipsPlaced())
 				this.endDeploymentPhase();		
 		}
 		
 		return out;
 	}	
-
+    private boolean allShipsPlaced(){
+    	return (checkAirPlaced() && data.battlePlaced && data.destPlaced && data.subPlaced && data.minePlaced);
+    }
 	
 	public boolean rotate()
 	{
@@ -498,22 +503,8 @@ public class GUI extends JFrame
 	
     public String deploy(int i, int j)
 	{
-		String out1= "";
-		
-		out1=this.placeAir(i,j);
-		out1= out1 + "\n" +this.placeBattle(i,j);
-		out1= out1 + "\n" +this.placeDest(i,j);
-		out1= out1 + "\n" +this.placeSub(i,j);
-		out1= out1 + "\n" +this.placeMine(i,j);
-	//	if(playerHome.allShipsPlaced())
-	//	{
-			//this.deployed();
-	//	}
-			//this.playerTurn();	
-	out1=out1 + data.gameState.playerTurn;	/*playerHome.allShipsPlaced()*/;
-	
-	
-		return out1;
+		return this.placeAir(i,j) + "\n" +this.placeBattle(i,j) + "\n" +this.placeDest(i,j) + "\n" +this.placeSub(i,j)+"\n" +this.placeMine(i,j)+ data.gameState.playerTurn;	
+
 	}
 
 	
@@ -530,12 +521,10 @@ public class GUI extends JFrame
 	}
 
 	
-	private boolean shipsPlaced(){
-		return (data.minePlaced && data.destPlaced && data.subPlaced &&	data.battlePlaced && data.gameState.playerHomeGrid.isAirPlaced());
-	}
+	
 	public void endDeploymentPhase()
 	{
-		if(shipsPlaced())
+		if(allShipsPlaced())
 		data.gameState.SetAllShipsDeployed();
 		getOutText().setText("All Ships Deployed, Player's Turn! Click on the left grid to fire shots");
 		this.data.gameState.setPlayerTurn();
@@ -603,7 +592,7 @@ public class GUI extends JFrame
 	{
 		if(validForShooting())
 		{
-		int sqrVal = data.gameState.playerHomeGrid.getGridVal(X,Y);
+		int sqrVal = data.gameState.playerHomeGrid.getGridValue(X,Y);
 						
 						if(takenShot(sqrVal))
 						{
@@ -661,8 +650,24 @@ public class GUI extends JFrame
 	public JTextField getOutText() {
 		return data.outText;
 	}	
-		
-	
+	public boolean checkMineSunk(){
+		return data.gameState.playerHomeGrid.checkMineSunk();
+	}
+	public boolean checkAirSunk(){
+		return data.gameState.playerHomeGrid.checkAirSunk();
+	}
+	public boolean checkSubSunk(){
+		return data.gameState.playerHomeGrid.checkSubSunk();
+	}
+	public boolean checkDestSunk(){
+		return data.gameState.playerHomeGrid.checkDestSunk();
+	}
+	public boolean checkBattleSunk(){
+		return data.gameState.playerHomeGrid.checkBattleSunk();
+	}
+	public int getGridValue(int i,int j){
+		return data.gameState.playerHomeGrid.getGridValue(i,j);
+	}
 }
 	
 
