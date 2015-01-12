@@ -47,13 +47,9 @@ public class BattleShipsEngine {
 		
 		System.out.println("PlayerTurn " + gui.data.gameState.isPlayerTurn());
 		System.out.println("Deployed " + gui.data.gameState.isBothPlayerAndAgentShipsDeployed());
-		
 		System.out.println("PlayerTurn " + gui.data.gameState.isPlayerTurn());	
 		System.out.println("Deployed " + gui.data.gameState.isBothPlayerAndAgentShipsDeployed());
 			
-	
-	
-	
 	
 		while(!gui.data.gameState.playerHomeGrid.allShipsPlaced())
 		{
@@ -220,5 +216,35 @@ public class BattleShipsEngine {
 				}
 		}
 	}
-	
+	public void resetPlaced(){
+		this.minePlaced = false;
+		this.destPlaced = false;
+		this.subPlaced = false;
+		this.battlePlaced = false;
+	}
+	public void resetSunk(){
+		this.agentMineSunk= false;
+		this.agentDestSunk= false;
+		this.agentSubSunk= false;		
+		this.playerMineSunk= false;
+	}
+	public void resetPaintSunk(){
+		this.paintMineSunk= false;
+		this.paintDestSunk= false;
+		this.paintSubSunk= false;
+		this.paintBattleSunk= false;
+		this.paintAirSunk= false;
+	}
+	public void resetEngine(){
+		this.i = 0;
+		this.j = 0;
+		
+		this.gameState = new GameState();
+		this.agentWins= false;
+
+		 resetPlaced();
+		 resetSunk();
+		 			 			
+		 this.showMap= true;
+	}
 }

@@ -18,6 +18,7 @@ public class BattleshipsGUITester {
 		
 		// Add and check ships
         gui.placeAir(0, 7);
+        Assert.assertEquals(false,gui.submarineCanBePlaced());
 		Assert.assertEquals("Aircraft Carrier Will Not Fit Here",gui.getOutText().getText());
 		String result="|0000055555|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n";
 		Assert.assertEquals(result, gui.placeAir(0, 5));
@@ -32,6 +33,7 @@ public class BattleshipsGUITester {
 	    Assert.assertEquals("|0000055555|\n|0000444400|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n",gui.placeBattle(1, 4));
 		Assert.assertEquals("Battleships Will Not Fit Here",gui.getOutText().getText());
 
+		 Assert.assertEquals(false,gui.submarineCanBePlaced());
 		//dest
 	    Assert.assertEquals("not valid|0000055555|\n|0000444400|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n",gui.placeDest(3, 9));
 	    Assert.assertEquals("Destroyer Will Not Fit Here", gui.getOutText().getText());
@@ -41,6 +43,7 @@ public class BattleshipsGUITester {
 	    Assert.assertEquals("Destroyer Placed", gui.getOutText().getText());
 	    
 	    //sub
+	    Assert.assertEquals(true,gui.submarineCanBePlaced());
 	    Assert.assertEquals("not valid|0000055555|\n|0000444400|\n|0000000000|\n|0000777000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000000|\n",gui.placeSub(4, 9));
 	    Assert.assertEquals("Submarine Will Not Fit Here", gui.getOutText().getText());
 	    
@@ -57,7 +60,8 @@ public class BattleshipsGUITester {
 	    Assert.assertEquals("|0000055555|\n|0000444400|\n|0000000000|\n|0000777000|\n|3330000000|\n|0000000000|\n|0000000000|\n|0000000000|\n|0000000022|\n|0000000000|\n",gui.placeMine(8,8));
 	    Assert.assertEquals("Player turn, take a shot", gui.getOutText().getText());
 	    
-	  
+     
+	 
 	    
 	}
 	  @Test

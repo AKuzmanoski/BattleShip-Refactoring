@@ -23,18 +23,15 @@ public class GUI extends JFrame
 		contentPane.setLayout(new BorderLayout(2,1));
 		this.setResizable(false);
 		
-		resetPlaced();
+		data.resetPlaced();
 		
 		setHoriz(true);
 		data.showMap= true;
 		
-		resetPaintSunk();
+		data.resetPaintSunk();
 		
-	
 		data.gameState = paramGameState;
-		
-		
-		
+			
 		//attack panel
 		Container APanel = new Container();
 		APanel.setLayout(new GridLayout());
@@ -127,27 +124,6 @@ public class GUI extends JFrame
 		bottomShipLabelPanel.setLayout(new FlowLayout());
 		//add bottomShipPanel to shipPanel
 		shipPanel.add(bottomShipLabelPanel);
-				
-				
-		//add mineweeper label to the topShipLabelPanel
-	//	JLabel minesweeperLabel = new JLabel("Minesweeper");
-		//topShipLabelPanel.add(minesweeperLabel);
-		
-		//add submarine label to the topShipLabelPanel
-	//	JLabel submarineLabel = new JLabel("Submarine");
-		//topShipLabelPanel.add(submarineLabel);
-		
-		//add destroyer label to the topShipLabelPanel
-		//JLabel destroyerLabel = new JLabel("Destroyer");
-		//topShipLabelPanel.add(destroyerLabel);
-		
-		//add Battleship label to the bottomShipLabelPanel
-	//	JLabel battlershipLabel = new JLabel("Battleship");
-	//	bottomShipLabelPanel.add(battlershipLabel);
-		
-		//add Aircraft Carrier label to the bottomShipLabelPanel
-	//	JLabel aircraftCarrierLabel = new JLabel("Aircraft Carrier");
-	//	bottomShipLabelPanel.add(aircraftCarrierLabel);
 		
 		JButton NewButton = new JButton("New Game");
 		topShipPanel.add(NewButton);
@@ -198,25 +174,7 @@ public class GUI extends JFrame
 		this.setVisible(true);
 			
 	}
-		private void resetPlaced(){
-			data.minePlaced = false;
-			data.destPlaced = false;
-			data.subPlaced = false;
-			data.battlePlaced = false;
-		}
-		private void resetSunk(){
-			data.agentMineSunk= false;
-			 data.agentDestSunk= false;
-			 data.agentSubSunk= false;		
-			 data.playerMineSunk= false;
-		}
-		private void resetPaintSunk(){
-			data.paintMineSunk= false;
-			data.paintDestSunk= false;
-			data.paintSubSunk= false;
-			data.paintBattleSunk= false;
-			data.paintAirSunk= false;
-		}
+		
 	
 	public void setOut(String s)
 	{
@@ -234,9 +192,7 @@ public class GUI extends JFrame
 					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
 				else
 				if (data.gameState.isCompHomeGridLessThanMinus1(i,j))
-					HitIcon.paint(attackPanelGraphics,(j*20),(i*20));
-				
-				
+					HitIcon.paint(attackPanelGraphics,(j*20),(i*20));								
 			}
 		}
 
@@ -290,41 +246,15 @@ public class GUI extends JFrame
 	{
 	 	data.paintAirSunk= true;
 	}
-			
-	public void reset()
-	{
-		
-		 data.i = 0;
-		 data.j = 0;
-		
-		 data.gameState = new GameState();
 	
-		 data.agentWins= false;
-		
-		 
-		
-		 
-
-		 setHoriz(false);
-		 data.showMap= false;
-		
-		 resetPlaced();
-		
-		 resetSunk();
-		 			 		
-		
+	public void reset()
+	{		
+        data.resetEngine();
+        
 		setHoriz(true);
-		data.showMap= true;
-		
-		
-		
+			
 		Grid compHome = new Grid(10,10);
 		Grid compAtt = new Grid(10,10);
-	
-		
-		
-		
-		
 		
 		this.pack();
 		this.setSize(640,400);
@@ -340,39 +270,40 @@ public class GUI extends JFrame
 			boolean valid;
 			if(isShipRotatedHorizonally())
 			{			
-				valid = data.gameState.playerHomeGrid.addAir(i,j,0);  // razlicno
+				valid = data.gameState.playerHomeGrid.addAir(i,j,0);
 			}else{
-				valid = data.gameState.playerHomeGrid.addAir(i,j,1); //razlicno
+				valid = data.gameState.playerHomeGrid.addAir(i,j,1); 
 			}
 			
 			if(valid){
 				Graphics hp = data.homePanel.getGraphics();
 				if(isShipRotatedHorizonally()){
-					AircraftCarrierH.paint(hp,(j*20),(i*20));//razl
+					AircraftCarrierH.paint(hp,(j*20),(i*20));
 				}else{
-					AircraftCarrier.paint(hp,(j*20),(i*20));//razl
+					AircraftCarrier.paint(hp,(j*20),(i*20));
 				}
 				
-				out = out + data.gameState.playerHomeGrid.toString();//isto
-				data.gameState.playerHomeGrid.setAirPlacedTrue();//isto
-				getOutText().setText("Air Placed");//isto
+				out = out + data.gameState.playerHomeGrid.toString();
+				data.gameState.playerHomeGrid.setAirPlacedTrue();
+				getOutText().setText("Air Placed");
 			}
 			else{
 				if(isShipRotatedHorizonally()){
 				getOutText().setText("Aircraft Carrier Will Not Fit Here");
 				}
-				out ="not valid";//isto
-				out = out + data.gameState.playerHomeGrid.toString();//isto
+				out ="not valid" + data.gameState.playerHomeGrid.toString();//isto
 			}
 		}
 		return out;
 	}
 	
-	
+	private boolean battleshipCanBePlaced(){
+		return (data.gameState.playerHomeGrid.isAirPlaced() && !data.battlePlaced);
+	}
 	public String placeBattle(int i, int j)
 	{
 		String out ="";
-		if(data.gameState.playerHomeGrid.isAirPlaced() && !data.battlePlaced)
+		if(battleshipCanBePlaced())
 		{
 			boolean valid;
 			if(isShipRotatedHorizonally())
@@ -396,8 +327,7 @@ public class GUI extends JFrame
 					getOutText().setText("Battleship Placed");
 				}
 			}else{
-				out ="not valid";
-				out = out + data.gameState.playerHomeGrid.toString();
+				out ="not valid"+ data.gameState.playerHomeGrid.toString();
 				getOutText().setText("Battleships Will Not Fit Here");
 			}
 				
@@ -406,11 +336,13 @@ public class GUI extends JFrame
 		return out;
 	}	
 	
-
+    private boolean destroyerCanBePlaced(){
+    	return (data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && !data.destPlaced);
+    }
 	public String placeDest(int i, int j)
 	{
 		String out ="";
-		if(data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && !data.destPlaced)
+		if(destroyerCanBePlaced())
 		{
 			boolean valid;
 			if(isShipRotatedHorizonally())
@@ -432,10 +364,9 @@ public class GUI extends JFrame
 				data.destPlaced = true;
 				getOutText().setText("Destroyer Placed");
 			}else{
-				out ="not valid";
-				out = out + data.gameState.playerHomeGrid.toString();
+				out ="not valid" + data.gameState.playerHomeGrid.toString();
 				if(isShipRotatedHorizonally()){
-					getOutText().setText("Destroyer Will Not Fit Here");//razl!!
+					getOutText().setText("Destroyer Will Not Fit Here");
 				}
 			}
 		}	
@@ -443,11 +374,13 @@ public class GUI extends JFrame
 		return out;
 	}
 	
-	
+	public boolean submarineCanBePlaced(){
+		return (data.gameState.playerHomeGrid.isAirPlaced() && data.gameState.playerHomeGrid.checkBattlePlaced() && data.gameState.playerHomeGrid.checkDestPlaced() && !data.gameState.playerHomeGrid.checkSubPlaced());
+	}
 	public String placeSub(int i, int j)
 	{
 		String out ="";
-		if(data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && data.destPlaced && !data.subPlaced)
+		if(submarineCanBePlaced())
 		{
 			boolean valid;
 			if(isShipRotatedHorizonally())
@@ -467,15 +400,15 @@ public class GUI extends JFrame
 					}else{
 						Submarine.paint(hp,(j*20),(i*20));
 					}
-					out = out + data.gameState.playerHomeGrid.toString();//isto
-					data.subPlaced = true;//isto
-					getOutText().setText("Submarine Placed");//isto
+					out = out + data.gameState.playerHomeGrid.toString();
+					data.subPlaced = true;
+					getOutText().setText("Submarine Placed");
 			}
 			else
 			  {
-					out ="not valid";//isto
-					out = out + data.gameState.playerHomeGrid.toString();//isto
-					getOutText().setText("Submarine Will Not Fit Here");//isto
+					out ="not valid";
+					out = out + data.gameState.playerHomeGrid.toString();
+					getOutText().setText("Submarine Will Not Fit Here");
 			  }	
 			}
 		
@@ -485,11 +418,13 @@ public class GUI extends JFrame
 	}	
 	
 	
-	
+	private boolean minesweeperCanBePlaced(){
+		return (data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && data.destPlaced && data.subPlaced && !data.minePlaced);
+	}
 	public String placeMine(int i, int j)
 	{
 		String out ="";
-		if(data.gameState.playerHomeGrid.isAirPlaced() && data.battlePlaced && data.destPlaced && data.subPlaced && !data.minePlaced)
+		if(minesweeperCanBePlaced())
 		{
 			boolean valid;
 			if(isShipRotatedHorizonally())
@@ -507,14 +442,13 @@ public class GUI extends JFrame
 		    	}else{
 		    		Minesweeper.paint(hp,(j*20),(i*20));
 		    	}
-				out = out + data.gameState.playerHomeGrid.toString();//iso
-				data.minePlaced = true;//iso
-				getOutText().setText("Minesweeper Placed");//iso
-			}
-			else//isto
-			{
-				out ="not valid";
 				out = out + data.gameState.playerHomeGrid.toString();
+				data.minePlaced = true;
+				getOutText().setText("Minesweeper Placed");
+			}
+			else
+			{
+				out ="not valid"+ data.gameState.playerHomeGrid.toString();
 				getOutText().setText("Minesweeper Will Not Fit Here");
 			}	
 			
@@ -525,7 +459,7 @@ public class GUI extends JFrame
 		
 		return out;
 	}	
-	
+
 	
 	public boolean rotate()
 	{
@@ -584,10 +518,6 @@ public class GUI extends JFrame
 
 	
 	
-
-	
-
-	
 	public void setAgentWins()
 	{
 		data.agentWins= true;
@@ -599,18 +529,6 @@ public class GUI extends JFrame
 		return data.gameState.IsGameOver();
 	}
 
-	
-	
-
-	
-	
-	
-
-	/*
-	public void startDeployment()
-	{
-		deployment= true;
-	}*/
 	
 	private boolean shipsPlaced(){
 		return (data.minePlaced && data.destPlaced && data.subPlaced &&	data.battlePlaced && data.gameState.playerHomeGrid.isAirPlaced());
@@ -728,10 +646,6 @@ public class GUI extends JFrame
 		
 	}
 		
-
-	
-
-
 	private void setHoriz(boolean horiz) {
 		this.data.horiz = horiz;
 	}
@@ -748,34 +662,22 @@ public class GUI extends JFrame
 		return data.outText;
 	}	
 		
-		/*
-		smith.nextShot(m, compAtt);
-		int i =smith.getI();
-		int j =smith.getJ();
-		while(!g.getPlayerTurn() && !g.getGameOver())
-		{
-			g.agentShot(0,0);
-		}
-		System.out.println(compHome.toString());
-		
-		*/
-	
 	
 }
 	
-
-
 
 class AttackMousePressListener extends MouseAdapter
 {
 	
 	private AttackPanel a;
 	private GUI gui;
+	private AxisResolver resolver;
 	
 	public AttackMousePressListener(AttackPanel p, GUI gui2)
 	{
 		a=p;
 		gui=gui2;
+		resolver=new AxisResolver();
 	}
 	  
 	
@@ -787,8 +689,8 @@ class AttackMousePressListener extends MouseAdapter
 					int x = event.getX();
 					int y = event.getY();
 				
-					int gridj= resolveAxisCoOrdinate(x);
-					int gridi= resolveAxisCoOrdinate(y);
+					int gridj= resolver.resolveAxisCoOrdinate(x);
+					int gridi= resolver.resolveAxisCoOrdinate(y);
 				
 					Graphics attackPanelGraphics = a.getGraphics();
 					
@@ -806,48 +708,21 @@ class AttackMousePressListener extends MouseAdapter
 				}
 			}
 
-			private int resolveAxisCoOrdinate(int x) {
-				if(x>=200) return -1;
-			    return x/20;
-			    /*
-				if (x < 20)
-					return 0;
-				else if (x <40)
-					return 1;
-				else if (x <60)
-					return 2;
-				else if (x <80)
-					return 3;
-				else if (x <100)
-					return 4;
-				else if (x <120)
-					return 5;
-				else if (x <140)
-					return 6;
-				else if (x <160)
-					return 7;
-				else if (x <180)
-					return 8;
-				else if (x <200)
-					return 9;
-				return -1;
-				*/
-			}
+		}
 
-
-			
-}
 
 class HomeMousePressListener extends MouseAdapter
 {
 	
 	private HomePanel a;
 	private GUI gui;
+	private AxisResolver resolver;
 	
 	public HomeMousePressListener(HomePanel p, GUI gui2)
 	{
 		a=p;
 		gui=gui2;
+		resolver=new AxisResolver();
 	}
 	
 	
@@ -859,8 +734,8 @@ class HomeMousePressListener extends MouseAdapter
 				int x = event.getX();
 				int y = event.getY();
 			
-				int gridj= resolveAxisCoOrdinate(x);
-				int gridi= resolveAxisCoOrdinate(y);
+				int gridj= resolver.resolveAxisCoOrdinate(x);
+				int gridi= resolver.resolveAxisCoOrdinate(y);
 				
 				//gui.
 				
@@ -875,34 +750,7 @@ class HomeMousePressListener extends MouseAdapter
 				System.out.println("Element corresponds to " + gridi + gridj);
 				//repaint();
 			}
-			private int resolveAxisCoOrdinate(int x) {
-				
-				if(x>=200) return -1;
-			    return x/20;
-				
-				/*if (x < 20)
-					return 0;
-				else if (x <40)
-					return 1;
-				else if (x <60)
-					return 2;
-				else if (x <80)
-					return 3;
-				else if (x <100)
-					return 4;
-				else if (x <120)
-					return 5;
-				else if (x <140)
-					return 6;
-				else if (x <160)
-					return 7;
-				else if (x <180)
-					return 8;
-				else if (x <200)
-					return 9;
-				return -1;
-				*/
-			}
+		
 
 }
 
