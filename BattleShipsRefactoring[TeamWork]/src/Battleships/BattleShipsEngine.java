@@ -252,4 +252,12 @@ public class BattleShipsEngine {
 		 			 			
 		 this.showMap= true;
 	}
+
+
+	public void setState(GameState paramGameState) {
+		resetPlaced();
+		showMap = true;
+		resetPaintSunk();
+		gameState = paramGameState;
+	}
 }
