@@ -37,7 +37,7 @@ public class HomeMousePressListener extends MouseAdapter
 				//gui.data.gameState.deployVessel(gridi, gridj);
 				//System.out.println(gui.data.gameState.playerDeployStateToString();
 				
-				if(!gui.data.gameState.isBothPlayerAndAgentShipsDeployed())
+				if(!gui.data.getGameState().isBothPlayerAndAgentShipsDeployed())
 				{
 					gui.deploy(gridi,gridj);
 					

@@ -21,7 +21,7 @@ public class AttackMousePressListener extends MouseAdapter{
 	
 			public void mousePressed(MouseEvent event)
 			{
-				if(gui.data.gameState.IsAcceptingPlayerInput())
+				if(gui.data.getGameState().IsAcceptingPlayerInput())
 				{
 					Graphics g = a.getGraphics();
 					int x = event.getX();
@@ -33,7 +33,7 @@ public class AttackMousePressListener extends MouseAdapter{
 					Graphics attackPanelGraphics = a.getGraphics();
 					
 	                String acceptPlayerShotString = 
-	                	gui.data.gameState.acceptPlayerShot(gridi,gridj, attackPanelGraphics, gui.data.outText);
+	                	gui.data.getGameState().acceptPlayerShot(gridi,gridj, attackPanelGraphics, gui.data.getOutText());
 	                
 	                //gui.gameState.updatePlayerClick(gridi, gridj, gui);
 	                

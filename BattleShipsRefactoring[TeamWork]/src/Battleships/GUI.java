@@ -41,24 +41,15 @@ public class GUI extends JFrame {
 		CenterPanel.setLayout(new GridLayout(1, 3));
 		// create grids and maps
 
-		// attack panel add listener
-		data.attackPanel = new AttackPanel();
-		data.attackPanel.addMouseListener(new AttackMousePressListener(
-				data.attackPanel, this));
+		data.setDataPanels(this);
 
-		data.homePanel = new HomePanel();
-		data.homePanel.addMouseListener(new HomeMousePressListener(
-				data.homePanel, this));
-
-		data.influenceMapPanel = new InfluencePanel();
-
-		APanel.add(data.attackPanel);
+		APanel.add(data.getAttackPanel());
 		CenterPanel.add(APanel);
 
-		HPanel.add(data.homePanel);
+		HPanel.add(data.getHomePanel());
 		CenterPanel.add(HPanel);
 
-		IMPanel.add(data.influenceMapPanel);
+		IMPanel.add(data.getInfluenceMapPanel());
 		CenterPanel.add(IMPanel);
 
 		/*
@@ -170,59 +161,58 @@ public class GUI extends JFrame {
 	}
 
 	public void repaint() {
-		Graphics attackPanelGraphics = data.attackPanel.getGraphics();
+		Graphics attackPanelGraphics = data.getAttackPanel().getGraphics();
 
 		for (int i = 0; i < 10; i++) // change these to ROWS to use the default
 		{
 			for (int j = 0; j < 10; j++)// change this to CoLumns for default
 			{
-				if (data.gameState.getPlayerAtt().getGridValue(i, j) == 1)
+				if (data.getGameState().getPlayerAtt().getGridValue(i, j) == 1)
 					MissIcon.paint(attackPanelGraphics, (j * 20), (i * 20));
-				else if (data.gameState.isCompHomeGridLessThanMinus1(i, j))
+				else if (data.getGameState().isCompHomeGridLessThanMinus1(i, j))
 					HitIcon.paint(attackPanelGraphics, (j * 20), (i * 20));
 			}
 		}
-
 	}
 
 	public boolean getPaintMineSunk() {
-		return data.paintMineSunk;
+		return data.isPaintMineSunk();
 	}
 
 	public void setPaintMineSunk() {
-		data.paintMineSunk = true;
+		data.setPaintMineSunk(true);
 	}
 
 	public boolean getPaintDestSunk() {
-		return data.paintDestSunk;
+		return data.isPaintDestSunk();
 	}
 
 	public void setPaintDestSunk() {
-		data.paintDestSunk = true;
+		data.setPaintDestSunk(true);
 	}
 
 	public boolean getPaintSubSunk() {
-		return data.paintSubSunk;
+		return data.isPaintSubSunk();
 	}
 
 	public void setPaintSubSunk() {
-		data.paintSubSunk = true;
+		data.setPaintSubSunk(true);
 	}
 
 	public boolean getPaintBattleSunk() {
-		return data.paintBattleSunk;
+		return data.isPaintBattleSunk();
 	}
 
 	public void setPaintBattleSunk() {
-		data.paintBattleSunk = true;
+		data.setPaintBattleSunk(true);
 	}
 
 	public boolean getPaintAirSunk() {
-		return data.paintAirSunk;
+		return data.isPaintAirSunk();
 	}
 
 	public void setPaintAirSunk() {
-		data.paintAirSunk = true;
+		data.setPaintAirSunk(true);
 	}
 
 	public void reset() {
@@ -240,7 +230,7 @@ public class GUI extends JFrame {
 	}
 
 	public boolean checkAirPlaced() {
-		return this.data.gameState.getPlayerHomeGrid().checkAirPlaced();
+		return this.data.getGameState().getPlayerHomeGrid().checkAirPlaced();
 	}
 
 	public String placeAir(int i, int j) {
@@ -248,35 +238,35 @@ public class GUI extends JFrame {
 		if (!checkAirPlaced()) {
 			boolean valid;
 			if (isShipRotatedHorizonally()) {
-				valid = data.gameState.getPlayerHomeGrid().addAir(i, j, 0);
+				valid = data.getGameState().getPlayerHomeGrid().addAir(i, j, 0);
 			} else {
-				valid = data.gameState.getPlayerHomeGrid().addAir(i, j, 1);
+				valid = data.getGameState().getPlayerHomeGrid().addAir(i, j, 1);
 			}
 
 			if (valid) {
-				Graphics hp = data.homePanel.getGraphics();
+				Graphics hp = data.getHomePanel().getGraphics();
 				if (isShipRotatedHorizonally()) {
 					AircraftCarrierH.paint(hp, (j * 20), (i * 20));
 				} else {
 					AircraftCarrier.paint(hp, (j * 20), (i * 20));
 				}
 
-				out = out + data.gameState.getPlayerHomeGrid().toString();
-				data.gameState.getPlayerHomeGrid().setAirPlaced();
+				out = out + data.getGameState().getPlayerHomeGrid().toString();
+				data.getGameState().getPlayerHomeGrid().setAirPlaced();
 				getOutText().setText("Air Placed");
 			} else {
 				if (isShipRotatedHorizonally()) {
 					getOutText().setText("Aircraft Carrier Will Not Fit Here");
 				}
 				out = "not valid"
-						+ data.gameState.getPlayerHomeGrid().toString();// isto
+						+ data.getGameState().getPlayerHomeGrid().toString();// isto
 			}
 		}
 		return out;
 	}
 
 	private boolean battleshipCanBePlaced() {
-		return (checkAirPlaced() && !data.battlePlaced);
+		return (checkAirPlaced() && !data.isBattlePlaced());
 	}
 
 	public String placeBattle(int i, int j) {
@@ -284,26 +274,26 @@ public class GUI extends JFrame {
 		if (battleshipCanBePlaced()) {
 			boolean valid;
 			if (isShipRotatedHorizonally()) {
-				valid = data.gameState.getPlayerHomeGrid().addBattle(i, j, 0);
+				valid = data.getGameState().getPlayerHomeGrid().addBattle(i, j, 0);
 			} else {
-				valid = data.gameState.getPlayerHomeGrid().addBattle(i, j, 1);
+				valid = data.getGameState().getPlayerHomeGrid().addBattle(i, j, 1);
 			}
 
 			if (valid) {
-				Graphics hp = data.homePanel.getGraphics();
+				Graphics hp = data.getHomePanel().getGraphics();
 				if (isShipRotatedHorizonally()) {
 					BattleshipH.paint(hp, (j * 20), (i * 20));
 				} else {
 					Battleship.paint(hp, (j * 20), (i * 20));
 				}
-				out = out + data.gameState.getPlayerHomeGrid().toString();
-				data.battlePlaced = true;
+				out = out + data.getGameState().getPlayerHomeGrid().toString();
+				data.setBattlePlaced(true);
 				if (!isShipRotatedHorizonally()) {
 					getOutText().setText("Battleship Placed");
 				}
 			} else {
 				out = "not valid"
-						+ data.gameState.getPlayerHomeGrid().toString();
+						+ data.getGameState().getPlayerHomeGrid().toString();
 				getOutText().setText("Battleships Will Not Fit Here");
 			}
 
@@ -313,7 +303,7 @@ public class GUI extends JFrame {
 	}
 
 	private boolean destroyerCanBePlaced() {
-		return (checkAirPlaced() && data.battlePlaced && !data.destPlaced);
+		return (checkAirPlaced() && data.isBattlePlaced() && !data.isDestPlaced());
 	}
 
 	public String placeDest(int i, int j) {
@@ -322,11 +312,11 @@ public class GUI extends JFrame {
 			boolean valid;
 			if (isShipRotatedHorizonally()) {
 
-				valid = data.gameState.getPlayerHomeGrid().addDest(i, j, 0);
+				valid = data.getGameState().getPlayerHomeGrid().addDest(i, j, 0);
 			} else {
-				valid = data.gameState.getPlayerHomeGrid().addDest(i, j, 1);
+				valid = data.getGameState().getPlayerHomeGrid().addDest(i, j, 1);
 			}
-			Graphics hp = data.homePanel.getGraphics();
+			Graphics hp = data.getHomePanel().getGraphics();
 
 			if (valid) {
 				if (isShipRotatedHorizonally()) {
@@ -334,12 +324,12 @@ public class GUI extends JFrame {
 				} else {
 					Destroyer.paint(hp, (j * 20), (i * 20));
 				}
-				out = out + data.gameState.getPlayerHomeGrid().toString();
-				data.destPlaced = true;
+				out = out + data.getGameState().getPlayerHomeGrid().toString();
+				data.setDestPlaced(true);
 				getOutText().setText("Destroyer Placed");
 			} else {
 				out = "not valid"
-						+ data.gameState.getPlayerHomeGrid().toString();
+						+ data.getGameState().getPlayerHomeGrid().toString();
 				if (isShipRotatedHorizonally()) {
 					getOutText().setText("Destroyer Will Not Fit Here");
 				}
@@ -351,8 +341,8 @@ public class GUI extends JFrame {
 
 	public boolean submarineCanBePlaced() {
 		return (checkAirPlaced()
-				&& data.gameState.getPlayerHomeGrid().checkBattlePlaced()
-				&& data.gameState.getPlayerHomeGrid().checkDestPlaced() && !data.gameState
+				&& data.getGameState().getPlayerHomeGrid().checkBattlePlaced()
+				&& data.getGameState().getPlayerHomeGrid().checkDestPlaced() && !data.getGameState()
 				.getPlayerHomeGrid().checkSubPlaced());
 	}
 
@@ -361,12 +351,12 @@ public class GUI extends JFrame {
 		if (submarineCanBePlaced()) {
 			boolean valid;
 			if (isShipRotatedHorizonally()) {
-				valid = data.gameState.getPlayerHomeGrid().addSub(i, j, 0);
+				valid = data.getGameState().getPlayerHomeGrid().addSub(i, j, 0);
 			} else {
-				valid = data.gameState.getPlayerHomeGrid().addSub(i, j, 1);
+				valid = data.getGameState().getPlayerHomeGrid().addSub(i, j, 1);
 			}
 
-			Graphics hp = data.homePanel.getGraphics();
+			Graphics hp = data.getHomePanel().getGraphics();
 
 			if (valid) {
 				if (isShipRotatedHorizonally()) {
@@ -374,12 +364,12 @@ public class GUI extends JFrame {
 				} else {
 					Submarine.paint(hp, (j * 20), (i * 20));
 				}
-				out = out + data.gameState.getPlayerHomeGrid().toString();
-				data.subPlaced = true;
+				out = out + data.getGameState().getPlayerHomeGrid().toString();
+				data.setSubPlaced(true);
 				getOutText().setText("Submarine Placed");
 			} else {
 				out = "not valid";
-				out = out + data.gameState.getPlayerHomeGrid().toString();
+				out = out + data.getGameState().getPlayerHomeGrid().toString();
 				getOutText().setText("Submarine Will Not Fit Here");
 			}
 		}
@@ -388,8 +378,8 @@ public class GUI extends JFrame {
 	}
 
 	private boolean minesweeperCanBePlaced() {
-		return (checkAirPlaced() && data.battlePlaced && data.destPlaced
-				&& data.subPlaced && !data.minePlaced);
+		return (checkAirPlaced() && data.isBattlePlaced() && data.isDestPlaced()
+				&& data.isSubPlaced() && !data.isMinePlaced());
 	}
 
 	public String placeMine(int i, int j) {
@@ -397,11 +387,11 @@ public class GUI extends JFrame {
 		if (minesweeperCanBePlaced()) {
 			boolean valid;
 			if (isShipRotatedHorizonally()) {
-				valid = data.gameState.getPlayerHomeGrid().addMine(i, j, 0);
+				valid = data.getGameState().getPlayerHomeGrid().addMine(i, j, 0);
 			} else {
-				valid = data.gameState.getPlayerHomeGrid().addMine(i, j, 1);
+				valid = data.getGameState().getPlayerHomeGrid().addMine(i, j, 1);
 			}
-			Graphics hp = data.homePanel.getGraphics();
+			Graphics hp = data.getHomePanel().getGraphics();
 
 			if (valid) {
 				if (isShipRotatedHorizonally()) {
@@ -409,12 +399,12 @@ public class GUI extends JFrame {
 				} else {
 					Minesweeper.paint(hp, (j * 20), (i * 20));
 				}
-				out = out + data.gameState.getPlayerHomeGrid().toString();
-				data.minePlaced = true;
+				out = out + data.getGameState().getPlayerHomeGrid().toString();
+				data.setMinePlaced(true);
 				getOutText().setText("Minesweeper Placed");
 			} else {
 				out = "not valid"
-						+ data.gameState.getPlayerHomeGrid().toString();
+						+ data.getGameState().getPlayerHomeGrid().toString();
 				getOutText().setText("Minesweeper Will Not Fit Here");
 			}
 
@@ -426,31 +416,31 @@ public class GUI extends JFrame {
 	}
 
 	private boolean allShipsPlaced() {
-		return (checkAirPlaced() && data.battlePlaced && data.destPlaced
-				&& data.subPlaced && data.minePlaced);
+		return (checkAirPlaced() && data.isBattlePlaced() && data.isDestPlaced()
+				&& data.isSubPlaced() && data.isMinePlaced());
 	}
 
 	public boolean rotate() {
 		setHoriz(!isShipRotatedHorizonally());
 		if (isShipRotatedHorizonally()
-				&& !data.gameState.isBothPlayerAndAgentShipsDeployed())
+				&& !data.getGameState().isBothPlayerAndAgentShipsDeployed())
 			getOutText().setText("Ship Will Be Placed Horizontally");
 		if (!isShipRotatedHorizonally()
-				&& !data.gameState.isBothPlayerAndAgentShipsDeployed())
+				&& !data.getGameState().isBothPlayerAndAgentShipsDeployed())
 			getOutText().setText("Ship Will Be Placed Vertically");
 		return isShipRotatedHorizonally();
 	}
 
 	public void showMap() {
-		data.showMap = true;
+		data.setShowMap(true);
 		this.paintMap();
 		getOutText().setText("Influence Map shown");
 	}
 
 	public void hideMap() {
-		data.showMap = false;
+		data.setShowMap(false);
 
-		Graphics g = data.influenceMapPanel.getGraphics();
+		Graphics g = data.getInfluenceMapPanel().getGraphics();
 
 		for (int i = 0; i < 10; i++) // change these to ROWS to use the default
 		{
@@ -467,40 +457,40 @@ public class GUI extends JFrame {
 	public String deploy(int i, int j) {
 		return this.placeAir(i, j) + "\n" + this.placeBattle(i, j) + "\n"
 				+ this.placeDest(i, j) + "\n" + this.placeSub(i, j) + "\n"
-				+ this.placeMine(i, j) + data.gameState.isPlayerTurn();
+				+ this.placeMine(i, j) + data.getGameState().isPlayerTurn();
 
 	}
 
 	public void setAgentWins() {
-		data.agentWins = true;
+		data.setAgentWins(true);
 
 	}
 
 	public boolean getGameOver() {
-		return data.gameState.IsGameOver();
+		return data.getGameState().IsGameOver();
 	}
 
 	public void endDeploymentPhase() {
 		if (allShipsPlaced())
-			data.gameState.SetAllShipsDeployed();
+			data.getGameState().SetAllShipsDeployed();
 		getOutText()
 				.setText(
 						"All Ships Deployed, Player's Turn! Click on the left grid to fire shots");
-		this.data.gameState.setPlayerTurn();
-		data.outText.setText(data.gameState.turnToString());
+		this.data.getGameState().setPlayerTurn();
+		data.getOutText().setText(data.getGameState().turnToString());
 	}
 
 	public void paintMap() {
 
-		Graphics g = data.influenceMapPanel.getGraphics();
+		Graphics g = data.getInfluenceMapPanel().getGraphics();
 
 		for (int i = 0; i < 10; i++) // change these to ROWS to use the default
 		{
 			for (int j = 0; j < 10; j++)// change this to CoLumns for default
 			{
-				int col = data.gameState.getInfluenceMap().getValue(i, j);
+				int col = data.getGameState().getInfluenceMap().getValue(i, j);
 
-				if (data.showMap) {
+				if (data.isShowMap()) {
 					InfluenceMapGraphic.paint(g, (j * 20), (i * 20), col);
 				}
 			}
@@ -509,19 +499,19 @@ public class GUI extends JFrame {
 	}
 
 	public void paintPlayerAttackGrid() {
-		this.data.gameState.setShipSunkStates();
+		this.data.getGameState().setShipSunkStates();
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				if (data.gameState.isCompHomegridRefIsminus3(i, j)
-						&& data.gameState.isAgentAirSunk()) {
-					Graphics attackPanelGraphics = data.attackPanel
+				if (data.getGameState().isCompHomegridRefIsminus3(i, j)
+						&& data.getGameState().isAgentAirSunk()) {
+					Graphics attackPanelGraphics = data.getAttackPanel()
 							.getGraphics();
 					SunkIcon.paint(attackPanelGraphics, (j * 20), (i * 20));
 				}
 
-				if (data.gameState.isCompHomeGridRefMinus4(i, j)
-						&& data.gameState.isAgentBattleSunk()) {
-					Graphics ap = data.attackPanel.getGraphics();
+				if (data.getGameState().isCompHomeGridRefMinus4(i, j)
+						&& data.getGameState().isAgentBattleSunk()) {
+					Graphics ap = data.getAttackPanel().getGraphics();
 					SunkIcon.paint(ap, (j * 20), (i * 20));
 				}
 
@@ -532,7 +522,7 @@ public class GUI extends JFrame {
 	}
 
 	private boolean validForShooting() {
-		return (data.gameState.isAgentTurn() && data.gameState
+		return (data.getGameState().isAgentTurn() && data.getGameState()
 				.isBothPlayerAndAgentShipsDeployed());
 	}
 
@@ -544,31 +534,31 @@ public class GUI extends JFrame {
 
 	{
 		if (validForShooting()) {
-			int sqrVal = data.gameState.getPlayerHomeGrid().getGridValue(X, Y);
+			int sqrVal = data.getGameState().getPlayerHomeGrid().getGridValue(X, Y);
 
 			if (takenShot(sqrVal)) {
 				System.out.println("Shot already taken! Have another go");
 			}
 
 			if (sqrVal == 0) {
-				System.out.println(data.gameState.getPlayerHomeGrid()
+				System.out.println(data.getGameState().getPlayerHomeGrid()
 						.shot(X, Y));
-				data.gameState.getCompAtt().update(X, Y, 1);
-				data.gameState.getInfluenceMap().miss(X, Y);
+				data.getGameState().getCompAtt().update(X, Y, 1);
+				data.getGameState().getInfluenceMap().miss(X, Y);
 				this.paintMap();
-				Graphics hp = data.homePanel.getGraphics();
+				Graphics hp = data.getHomePanel().getGraphics();
 				MissIcon.paint(hp, (Y * 20), (X * 20));
 				getOutText().setText("Agent Has Missed. Player's Turn");
-				this.data.gameState.setPlayerTurn();
-				data.outText.setText(data.gameState.turnToString());
+				this.data.getGameState().setPlayerTurn();
+				data.getOutText().setText(data.getGameState().turnToString());
 			}
 
 			if (sqrVal > 1) {
-				System.out.println(data.gameState.getPlayerHomeGrid()
+				System.out.println(data.getGameState().getPlayerHomeGrid()
 						.shot(X, Y));
-				data.gameState.getCompAtt().update(X, Y, 8);
-				data.gameState.getInfluenceMap().hit(X, Y);
-				Graphics hp = data.homePanel.getGraphics();
+				data.getGameState().getCompAtt().update(X, Y, 8);
+				data.getGameState().getInfluenceMap().hit(X, Y);
+				Graphics hp = data.getHomePanel().getGraphics();
 				HitIcon.paint(hp, (Y * 20), (X * 20));
 				getOutText().setText(
 						"Agent Has Hit One Of your ships! Agent's Turn again");
@@ -577,53 +567,53 @@ public class GUI extends JFrame {
 			}
 
 			System.out.println("compAtt");
-			System.out.println(data.gameState.getCompAtt().toString());
+			System.out.println(data.getGameState().getCompAtt().toString());
 
 		}
 
 		System.out.println("Map is \n"
-				+ data.gameState.getInfluenceMap().toString());
+				+ data.getGameState().getInfluenceMap().toString());
 
 	}
 
 	private void setHoriz(boolean horiz) {
-		this.data.horiz = horiz;
+		this.data.setHoriz(horiz);
 	}
 
 	private boolean isShipRotatedHorizonally() {
-		return data.horiz;
+		return data.isHoriz();
 	}
 
 	public void setOutText(JTextField outText) {
-		this.data.outText = outText;
+		this.data.setOutText(outText);
 	}
 
 	public JTextField getOutText() {
-		return data.outText;
+		return data.getOutText();
 	}
 
 	public boolean checkMineSunk() {
-		return data.gameState.getPlayerHomeGrid().checkMineSunk();
+		return data.getGameState().getPlayerHomeGrid().checkMineSunk();
 	}
 
 	public boolean checkAirSunk() {
-		return data.gameState.getPlayerHomeGrid().checkAirSunk();
+		return data.getGameState().getPlayerHomeGrid().checkAirSunk();
 	}
 
 	public boolean checkSubSunk() {
-		return data.gameState.getPlayerHomeGrid().checkSubSunk();
+		return data.getGameState().getPlayerHomeGrid().checkSubSunk();
 	}
 
 	public boolean checkDestSunk() {
-		return data.gameState.getPlayerHomeGrid().checkDestSunk();
+		return data.getGameState().getPlayerHomeGrid().checkDestSunk();
 	}
 
 	public boolean checkBattleSunk() {
-		return data.gameState.getPlayerHomeGrid().checkBattleSunk();
+		return data.getGameState().getPlayerHomeGrid().checkBattleSunk();
 	}
 
 	public int getGridValue(int i, int j) {
-		return data.gameState.getPlayerHomeGrid().getGridValue(i, j);
+		return data.getGameState().getPlayerHomeGrid().getGridValue(i, j);
 	}
 }
 
