@@ -161,18 +161,7 @@ public class GUI extends JFrame {
 	}
 
 	public void repaint() {
-		Graphics attackPanelGraphics = data.getAttackPanel().getGraphics();
-
-		for (int i = 0; i < 10; i++) // change these to ROWS to use the default
-		{
-			for (int j = 0; j < 10; j++)// change this to CoLumns for default
-			{
-				if (data.getGameState().getPlayerAtt().getGridValue(i, j) == 1)
-					MissIcon.paint(attackPanelGraphics, (j * 20), (i * 20));
-				else if (data.getGameState().isCompHomeGridLessThanMinus1(i, j))
-					HitIcon.paint(attackPanelGraphics, (j * 20), (i * 20));
-			}
-		}
+		data.repaint();
 	}
 
 	public boolean getPaintMineSunk() {
@@ -219,10 +208,7 @@ public class GUI extends JFrame {
 		data.resetEngine();
 
 		setHoriz(true);
-
-		Grid compHome = new Grid(10, 10);
-		Grid compAtt = new Grid(10, 10);
-
+		
 		this.pack();
 		this.setSize(640, 400);
 		this.setVisible(true);

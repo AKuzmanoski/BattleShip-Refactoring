@@ -272,8 +272,8 @@ public class GameState {
 		return compHomeGrid.getGridValue(i,j) ==-4;
 	}
 
-	public boolean isCompHomeGridLessThanMinus1(int i,int j) {
-		return compHomeGrid.getGridValue(i,j) < -1;
+	public boolean isHit(int i,int j) {
+		return compAtt.isHit(i, j);
 	}
 
 	public void setAgentAirSunk(boolean agentAirSunk) {
@@ -321,6 +321,10 @@ public class GameState {
 
 	public boolean isAgentTurn() {
 		return agentTurn && ! playerTurn;
+	}
+
+	public boolean isMiss(int i, int j) {
+		return compAtt.isMiss(i, j);
 	}
 
 	
